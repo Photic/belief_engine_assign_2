@@ -2,6 +2,9 @@ package main;
 
 import java.util.ArrayList;
 
+import model.Clause;
+import model.Literal;
+
 public class TesterClass {
 
 	public static void main(String[] args) {
