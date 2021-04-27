@@ -10,4 +10,19 @@ public class Literal {
 		this.value = value;
 	}
 	
+	public boolean getValue() {
+		return value;
+	}
+	public String getName() {
+		return name;
+	}
+	public String toString() {
+		if (value) {
+			return name;
+		}
+		else {
+			return "¬" + name;
+		}
+	}
+	
 }
