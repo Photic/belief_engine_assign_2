@@ -24,7 +24,7 @@ public class Literal {
 			return name;
 		}
 		else {
-			return "ï¿½" + name;
+			return "¬" + name;
 		}
 	}
 	
