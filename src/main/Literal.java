@@ -13,6 +13,9 @@ public class Literal {
 	public boolean getValue() {
 		return value;
 	}
+	public void setValue(boolean newValue) {
+		this.value = newValue;
+	}
 	public String getName() {
 		return name;
 	}
