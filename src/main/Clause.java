@@ -11,4 +11,12 @@ public class Clause {
 		literals = new ArrayList<Literal>();
 	}
 	
+	public Clause negateClause() {
+		
+		for (Literal literal : literals) {
+			literal.setValue(!literal.getValue());
+		}
+		return this;
+	}
+	
 }
