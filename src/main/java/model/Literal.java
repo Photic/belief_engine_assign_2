@@ -1,4 +1,4 @@
-package main;
+package model;
 
 public class Literal {
 	
@@ -24,7 +24,7 @@ public class Literal {
 			return name;
 		}
 		else {
-			return "¬" + name;
+			return "ï¿½" + name;
 		}
 	}
 	
