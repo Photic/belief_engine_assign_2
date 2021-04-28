@@ -1,5 +1,19 @@
+import java.util.Scanner;
+
 public class RunMe {
     public static void main(String args[]) {
-        System.out.println("Hello World");
+        Scanner scan = new Scanner(System.in);
+        String line = "";
+
+        while (!line.equals("q")) {
+            line = input(scan);
+            
+        }
+    }
+
+    public static String input(Scanner scan) {
+        System.out.print("Give input to agent: ");
+        return scan.nextLine();
     }
 }
+
