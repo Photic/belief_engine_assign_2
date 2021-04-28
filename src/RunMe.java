@@ -7,8 +7,10 @@ public class RunMe {
 
         while (!line.equals("q")) {
             line = input(scan);
-            
+
         }
+
+        System.out.println("Agent have Exited");
     }
 
     public static String input(Scanner scan) {
