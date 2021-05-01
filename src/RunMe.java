@@ -9,5 +9,6 @@ public class RunMe {
         literals.add(new Literal("b",false));
         Clause clause = new Clause(literals);
         System.out.println(clause.toString());
+
     }
 }

@@ -10,4 +10,13 @@ public class BeliefBase {
 	public BeliefBase() {
 		clauses = new HashSet<Clause>();
 	}
+	public boolean addClause(Clause newClause) {
+		return clauses.add(newClause);
+	}
+	public boolean removeClause(Clause clause) {
+		return clauses.remove(clause);
+	}
+	public Set<Clause> getClauses() {
+		return clauses;
+	}
 }
