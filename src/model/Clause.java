@@ -1,4 +1,4 @@
-package model;
+package src.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +22,38 @@ public class Clause {
 		return this;
 	}
 	public String toString() {
-		String result = "";
+		String result = "(";
 		
 		for (Literal literal : literals) {
-			result += literal.toString() + " \u2228 "; // \u2228 == Propositional Logic OR operator
+			result += String.format("%s %s ",literal.toString(),Constants.OR);
 		}
-		result = result.substring(0,result.length());
+		result = result.substring(0,result.length()-3) + ")";
 		
 		
 		return result;
 	}
-	
+	public List<Literal> getLiterals() {
+		return literals;
+	}
+	public boolean add(Literal newLiteral) {
+		return literals.add(newLiteral);
+	}
+	public boolean remove(Literal newLiteral) {
+		return literals.remove(newLiteral);
+	}
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Clause) {
+			return this.hashCode() == o.hashCode();			
+		} else return false;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+	    int result = 1;
+	    for (Literal literal : literals) {
+	    	result = prime * result + literal.hashCode();	    	
+	    }
+		return result;
+	}
 }
