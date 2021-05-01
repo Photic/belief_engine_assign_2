@@ -32,5 +32,28 @@ public class Clause {
 		
 		return result;
 	}
-	
+	public List<Literal> getLiterals() {
+		return literals;
+	}
+	public boolean add(Literal newLiteral) {
+		return literals.add(newLiteral);
+	}
+	public boolean remove(Literal newLiteral) {
+		return literals.remove(newLiteral);
+	}
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Clause) {
+			return this.hashCode() == o.hashCode();			
+		} else return false;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+	    int result = 1;
+	    for (Literal literal : literals) {
+	    	result = prime * result + literal.hashCode();	    	
+	    }
+		return result;
+	}
 }

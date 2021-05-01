@@ -10,13 +10,22 @@ public class BeliefBase {
 	public BeliefBase() {
 		clauses = new HashSet<Clause>();
 	}
-	public boolean addClause(Clause newClause) {
+	public boolean add(Clause newClause) {
 		return clauses.add(newClause);
 	}
-	public boolean removeClause(Clause clause) {
+	public boolean remove(Clause clause) {
 		return clauses.remove(clause);
 	}
 	public Set<Clause> getClauses() {
 		return clauses;
 	}
+	public String toString() {
+		String result = "";
+		for (Clause clause : clauses) {
+	        result += String.format("%s %s ", clause.toString(), Constants.AND);
+	    }
+		result = result.substring(0,result.length()-3);
+		return result;
+	}
+	
 }

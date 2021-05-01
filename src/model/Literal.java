@@ -27,5 +27,16 @@ public class Literal {
 			return "¬" + name;
 		}
 	}
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Literal) {
+			Literal other = (Literal) o;
+			return name.equals(other.getName()) && (value == other.getValue());			
+		} else return false;
+	}
+	@Override
+	public int hashCode() {
+		return name.hashCode() + (value ? 2 : 1);
+	}
 	
 }
