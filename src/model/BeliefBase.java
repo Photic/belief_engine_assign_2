@@ -27,5 +27,19 @@ public class BeliefBase {
 		result = result.substring(0,result.length()-3);
 		return result;
 	}
+	public boolean equals(Object o) {
+		if (o instanceof BeliefBase) {
+			return this.hashCode() == o.hashCode();			
+		} else return false;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+	    int result = 1;
+	    for (Clause clause : clauses) {
+	    	result = prime * result + clause.hashCode();	    	
+	    }
+		return result;
+	}
 	
 }
