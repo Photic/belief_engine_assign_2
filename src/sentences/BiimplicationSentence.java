@@ -25,8 +25,15 @@ public class BiimplicationSentence implements Sentence {
 	@Override
 	public Sentence reduce() {
 		return new AndSentence(
-				new ImplicationSentence(alpha, beta).reduce(),
-				new ImplicationSentence(beta, alpha).reduce()
+				new ImplicationSentence(alpha, beta),
+				new ImplicationSentence(beta, alpha)
+				).reduce();
+	}
+	@Override
+	public Sentence reduceOnce() {
+		return new AndSentence(
+				new ImplicationSentence(alpha, beta),
+				new ImplicationSentence(beta, alpha)
 				);
 	}
 	public String toString() {
@@ -34,13 +41,13 @@ public class BiimplicationSentence implements Sentence {
 		boolean betaIsAtomic = beta instanceof AtomicSentence;
 		
 		if (alphaIsAtomic && betaIsAtomic) {
-			return String.format("%s%s%s",alpha.toString(), Constants.IFF, beta.toString());
+			return String.format("%s %s %s",alpha.toString(), Constants.IFF, beta.toString());
 		} else if (alphaIsAtomic) {
-			return String.format("%s%s(%s)",alpha.toString(), Constants.IFF, beta.toString());
+			return String.format("%s %s (%s)",alpha.toString(), Constants.IFF, beta.toString());
 		} else if (betaIsAtomic) {
-			return String.format("(%s)%s%s",alpha.toString(), Constants.IFF, beta.toString());
+			return String.format("(%s) %s %s",alpha.toString(), Constants.IFF, beta.toString());
 		} else {
-			return String.format("(%s)%s(%s)",alpha.toString(), Constants.IFF, beta.toString());
+			return String.format("(%s) %s (%s)",alpha.toString(), Constants.IFF, beta.toString());
 		}
 	}
 

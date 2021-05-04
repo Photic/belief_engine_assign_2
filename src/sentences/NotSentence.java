@@ -15,23 +15,44 @@ public class NotSentence implements Sentence {
 
 	@Override
 	public Sentence reduce() {
-		if (sentence instanceof NotSentence) { // Double-negation elimination
-			return ((NotSentence) sentence).getSentence().reduce();
-		} else if (sentence instanceof AndSentence) { // De Morgan
+		if (sentence instanceof AndSentence) { // De Morgan: AND
 			return new OrSentence(
-					(new NotSentence(((AndSentence) sentence).getAlpha().reduce())).reduce(),
-					(new NotSentence(((AndSentence) sentence).getBeta().reduce())).reduce()
-					);
-		} else if (sentence instanceof OrSentence) { // De Morgan
+					(new NotSentence(((AndSentence) sentence).getAlpha())),
+					(new NotSentence(((AndSentence) sentence).getBeta()))
+					).reduce();
+		} else if (sentence instanceof OrSentence) { // De Morgan: OR
 			return new AndSentence(
-					(new NotSentence(((OrSentence) sentence).getAlpha())).reduce(),
-					(new NotSentence(((OrSentence) sentence).getBeta())).reduce()
-					);
+					(new NotSentence(((OrSentence) sentence).getAlpha())),
+					(new NotSentence(((OrSentence) sentence).getBeta()))
+					).reduce();
 			
+		} else if (sentence instanceof NotSentence) { // Double-negation elimination
+			return ((NotSentence) sentence).getSentence().reduce();
 		} else if (sentence instanceof AtomicSentence) {
 			return ((AtomicSentence) sentence).switchValue();
 		} else {
 			return sentence.reduce();			
+		}
+	}
+	@Override
+	public Sentence reduceOnce() {
+		if (sentence instanceof AndSentence) { // De Morgan: AND
+			return new OrSentence(
+					(new NotSentence(((AndSentence) sentence).getAlpha())),
+					(new NotSentence(((AndSentence) sentence).getBeta()))
+					);
+		} else if (sentence instanceof OrSentence) { // De Morgan: OR
+			return new AndSentence(
+					(new NotSentence(((OrSentence) sentence).getAlpha())),
+					(new NotSentence(((OrSentence) sentence).getBeta()))
+					).reduce();
+			
+		} else if (sentence instanceof NotSentence) { // Double-negation elimination
+			return ((NotSentence) sentence).getSentence();
+		} else if (sentence instanceof AtomicSentence) {
+			return ((AtomicSentence) sentence).switchValue();
+		} else {
+			return sentence;			
 		}
 	}
 	public Sentence getSentence() {

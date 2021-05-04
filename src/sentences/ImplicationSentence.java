@@ -22,22 +22,24 @@ public class ImplicationSentence implements Sentence {
 	}
 	@Override
 	public Sentence reduce() {
-		return new OrSentence(
-				new NotSentence(alpha).reduce(), beta.reduce()
-				);
+		return new OrSentence(new NotSentence(alpha), beta).reduce();
+	}
+	@Override
+	public Sentence reduceOnce() {
+		return new OrSentence(new NotSentence(alpha), beta);
 	}
 	public String toString() {
 		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
 		boolean betaIsAtomic = beta instanceof AtomicSentence;
 		
 		if (alphaIsAtomic && betaIsAtomic) {
-			return String.format("%s%s%s",alpha.toString(), Constants.IF, beta.toString());
+			return String.format("%s %s %s",alpha.toString(), Constants.IF, beta.toString());
 		} else if (alphaIsAtomic) {
-			return String.format("%s%s(%s)",alpha.toString(), Constants.IF, beta.toString());
+			return String.format("%s %s (%s)",alpha.toString(), Constants.IF, beta.toString());
 		} else if (betaIsAtomic) {
-			return String.format("(%s)%s%s",alpha.toString(), Constants.IF, beta.toString());
+			return String.format("(%s )%s %s",alpha.toString(), Constants.IF, beta.toString());
 		} else {
-			return String.format("(%s)%s(%s)",alpha.toString(), Constants.IF, beta.toString());
+			return String.format("(%s) %s (%s)",alpha.toString(), Constants.IF, beta.toString());
 		}
 	}
 

@@ -25,6 +25,10 @@ public class AtomicSentence implements Sentence {
 	public Sentence reduce() {
 		return this;
 	}
+	@Override
+	public Sentence reduceOnce() {
+		return this;
+	}
 	public Sentence switchValue() {
 		if (definedByLiteral) {
 			literal.setValue(!literal.getValue());

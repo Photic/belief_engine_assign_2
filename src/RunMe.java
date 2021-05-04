@@ -35,8 +35,24 @@ public class RunMe {
     					)
     			);
     	System.out.println(String.format("Sentence before CNF conversion: %s", sentence.toString()));
-    	sentence = sentence.reduce();
+    	sentence = sentence.reduce().reduce();
     	System.out.println(String.format("Sentence after CNF conversion: %s", sentence.toString()));
+    	
+    	Literal alpha = new Literal("alpha", true);
+    	Literal beta = new Literal("beta", true);
+    	Literal gamma = new Literal("gamma", true);
+    	
+    	Sentence distriTest = new BiimplicationSentence(
+    			new AtomicSentence(alpha),
+    			new OrSentence(
+    					new AtomicSentence(beta),
+    					new AtomicSentence(gamma)
+    					)
+    			);
+    	System.out.println(String.format("distriTest before reduction: %s", distriTest.toString()));
+    	distriTest = distriTest.reduceOnce();
+    	System.out.println(String.format("distriTest after reduction : %s #1", distriTest.toString()));
+    	distriTest = distriTest.reduceOnce();
     }
 }
 
