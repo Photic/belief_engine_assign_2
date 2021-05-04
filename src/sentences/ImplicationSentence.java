@@ -23,7 +23,7 @@ public class ImplicationSentence implements Sentence {
 	@Override
 	public Sentence reduce() {
 		return new OrSentence(
-				new NotSentence(alpha), beta
+				new NotSentence(alpha).reduce(), beta.reduce()
 				);
 	}
 	public String toString() {

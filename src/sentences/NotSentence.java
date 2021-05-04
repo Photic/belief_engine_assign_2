@@ -24,8 +24,8 @@ public class NotSentence implements Sentence {
 					);
 		} else if (sentence instanceof OrSentence) { // De Morgan
 			return new AndSentence(
-					(new NotSentence(((OrSentence) sentence).getAlpha().reduce())).reduce(),
-					(new NotSentence(((OrSentence) sentence).getBeta().reduce())).reduce()
+					(new NotSentence(((OrSentence) sentence).getAlpha())).reduce(),
+					(new NotSentence(((OrSentence) sentence).getBeta())).reduce()
 					);
 			
 		} else if (sentence instanceof AtomicSentence) {

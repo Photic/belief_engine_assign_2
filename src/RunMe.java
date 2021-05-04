@@ -23,15 +23,15 @@ public class RunMe {
         return scan.nextLine();
     }
     public static void SentenceToCNFTest() {
-    	Literal alpha = new Literal("alpha", true);
-    	Literal beta = new Literal("beta", true);
-    	Literal gamma = new Literal("gamma", true);
+    	Literal b11 = new Literal("b11", true);
+    	Literal p12 = new Literal("p12", true);
+    	Literal p21 = new Literal("p21", true);
     	
     	Sentence sentence = new BiimplicationSentence(
-    			new AtomicSentence(alpha),
+    			new AtomicSentence(b11),
     			new OrSentence(
-    					new AtomicSentence(beta),
-    					new AtomicSentence(gamma)
+    					new AtomicSentence(p12),
+    					new AtomicSentence(p21)
     					)
     			);
     	System.out.println(String.format("Sentence before CNF conversion: %s", sentence.toString()));
