@@ -24,7 +24,7 @@ public class Literal {
 			return name;
 		}
 		else {
-			return "¬" + name;
+			return Constants.NOT + name;
 		}
 	}
 	@Override
