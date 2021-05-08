@@ -1,7 +1,7 @@
 package sentences;
 import model.Constants;
 
-public class AndSentence implements Sentence {
+public class AndSentence extends Sentence {
 	private Sentence alpha;
 	private Sentence beta;
 	
@@ -30,7 +30,29 @@ public class AndSentence implements Sentence {
 		}
 		return new AndSentence(alpha.reduce(times - 1), beta.reduce(times - 1));
 	}
-	
+	@Override
+	public Sentence copy() {
+		Sentence alphaCopy = alpha.copy();
+		Sentence betaCopy = beta.copy();
+		return new AndSentence(alphaCopy, betaCopy);
+	}
+	@Override
+	public boolean isInCNF() {
+		boolean alphaIsAnd = alpha instanceof AndSentence;
+		boolean betaIsAnd = beta instanceof AndSentence;
+		boolean alphaIsOr = alpha instanceof OrSentence;
+		boolean betaIsOr = beta instanceof OrSentence;
+		
+		if (alphaIsAnd && betaIsOr) {
+			return alpha.isInCNF() && beta.isInCNF();
+		} else if (alphaIsOr && betaIsAnd) {
+			return alpha.isInCNF() && beta.isInCNF();
+		} else if (alphaIsOr && betaIsOr) {
+			return alpha.isInCNF() && beta.isInCNF();
+		}
+		return false;
+	}
+	@Override
 	public String toString() {
 		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
 		boolean betaIsAtomic = beta instanceof AtomicSentence;

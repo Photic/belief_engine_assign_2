@@ -2,7 +2,7 @@ package sentences;
 
 import model.Constants;
 
-public class OrSentence implements Sentence {
+public class OrSentence extends Sentence {
 	private Sentence alpha;
 	private Sentence beta;
 	
@@ -31,19 +31,41 @@ public class OrSentence implements Sentence {
 		}
 		if (beta instanceof AndSentence) {
 			return new AndSentence(
-					new OrSentence(alpha, ((AndSentence) beta).getAlpha()),
-					new OrSentence(alpha, ((AndSentence) beta).getBeta())
+					new OrSentence(alpha.copy(), ((AndSentence) beta.copy()).getAlpha()),
+					new OrSentence(alpha.copy(), ((AndSentence) beta.copy()).getBeta())
 					).reduce(times - 1);
 		} else if (alpha instanceof AndSentence) {
 			return new AndSentence(
-					new OrSentence(((AndSentence) alpha).getAlpha(), beta),
-					new OrSentence(((AndSentence) alpha).getBeta(), beta)
+					new OrSentence(((AndSentence) alpha.copy()).getAlpha(), beta.copy()),
+					new OrSentence(((AndSentence) alpha.copy()).getBeta(), beta.copy())
 					).reduce(times - 1);
 		} else {
 			return new OrSentence(alpha.reduce(times - 1),beta.reduce(times - 1));
 		}
 	}
-	
+	@Override
+	public Sentence copy() {
+		Sentence alphaCopy = alpha.copy();
+		Sentence betaCopy = beta.copy();
+		return new OrSentence(alphaCopy, betaCopy);
+	}
+	@Override
+	public boolean isInCNF() {
+		boolean alphaIsOr = alpha instanceof OrSentence;
+		boolean betaIsOr = beta instanceof OrSentence;
+		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
+		boolean betaIsAtomic = beta instanceof AtomicSentence;
+		
+		if (alphaIsAtomic && betaIsOr) {
+			return alpha.isInCNF() && beta.isInCNF();
+		} else if (alphaIsOr && betaIsAtomic) {
+			return alpha.isInCNF() && beta.isInCNF();
+		} else if (alphaIsAtomic && betaIsAtomic) {
+			return alpha.isInCNF() && beta.isInCNF();
+		}
+		return false;
+	}
+	@Override
 	public String toString() {
 		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
 		boolean betaIsAtomic = beta instanceof AtomicSentence;

@@ -35,10 +35,11 @@ public class RunMe {
     					)
     			);
     	System.out.println(String.format("Sentence before CNF conversion: %s", sentence.toString()));
-    	sentence = sentence.reduce().reduce();
+    	sentence = sentence.convertToCNF();
     	System.out.println(String.format("Sentence after CNF conversion: %s", sentence.toString()));
+    	System.out.println(String.format("Sentence isInCNF()-evaluation: %s", sentence.isInCNF()));
     	
-    	Literal alpha = new Literal("alpha", true);
+    	Literal alpha = new Literal("alpha", false);
     	Literal beta = new Literal("beta", true);
     	Literal gamma = new Literal("gamma", true);
     	
@@ -49,10 +50,10 @@ public class RunMe {
     					new AtomicSentence(gamma)
     					)
     			);
-    	System.out.println(String.format("distriTest before reduction: %s", distriTest.toString()));
-    	for (int i = 0; i < 20; i++) {
-    		System.out.println(String.format("distriTest after %d reductions : %s", i, distriTest.reduce(i).toString()));    		
-    	}
+    	System.out.println(String.format("Sentence before CNF conversion: %s", distriTest.toString()));
+    	distriTest = sentence.convertToCNF();
+    	System.out.println(String.format("Sentence after CNF conversion: %s", distriTest.toString()));
+    	System.out.println(String.format("Sentence isInCNF()-evaluation: %s", distriTest.isInCNF()));
     }
 }
 

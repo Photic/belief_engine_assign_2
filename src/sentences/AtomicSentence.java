@@ -2,7 +2,7 @@ package sentences;
 
 import model.Literal;
 
-public class AtomicSentence implements Sentence {
+public class AtomicSentence extends Sentence {
 	private Literal literal;
 	private boolean value;
 	private boolean definedByLiteral;
@@ -28,6 +28,14 @@ public class AtomicSentence implements Sentence {
 	@Override
 	public Sentence reduce(int times) {
 		return this;
+	}
+	@Override
+	public Sentence copy() {
+		return new AtomicSentence(literal.copy());
+	}
+	@Override
+	public boolean isInCNF() {
+		return true;
 	}
 	public Sentence switchValue() {
 		if (definedByLiteral) {

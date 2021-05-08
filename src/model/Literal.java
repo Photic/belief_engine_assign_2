@@ -9,6 +9,11 @@ public class Literal {
 		this.name = name;
 		this.value = value;
 	}
+	public Literal(boolean value) {
+		boolean evaluated = value;
+		this.name = "" + evaluated;
+		this.value = evaluated;
+	}
 	
 	public boolean getValue() {
 		return value;
@@ -26,6 +31,9 @@ public class Literal {
 		else {
 			return Constants.NOT + name;
 		}
+	}
+	public Literal copy() {
+		return new Literal(name, value);
 	}
 	@Override
 	public boolean equals(Object o) {

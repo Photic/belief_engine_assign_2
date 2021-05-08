@@ -1,7 +1,7 @@
 package sentences;
 import model.Constants;
 
-public class NotSentence implements Sentence {
+public class NotSentence extends Sentence {
 	private Sentence sentence;
 	
 	public NotSentence(Sentence sentence) {
@@ -40,14 +40,26 @@ public class NotSentence implements Sentence {
 			return sentence.reduce(times - 1);			
 		}
 	}
+	@Override
+	public Sentence copy() {
+		Sentence copySentence = sentence.copy();
+		return new NotSentence(copySentence);
+	}
+	@Override
+	public boolean isInCNF() {
+		if (!(sentence instanceof AtomicSentence)) {
+			return false;
+		}
+		return true;
+	}
 	public Sentence getSentence() {
 		return sentence;
 	}
 	public String toString() {
 		if (sentence instanceof AtomicSentence) {
-			return String.format("%s%s", Constants.NOT, sentence.toString());
+			return String.format("Not(%s)",sentence.toString());
 		} else {
-			return String.format("%s(%s)", Constants.NOT, sentence.toString());
+			return String.format("Not(%s)",sentence.toString());
 		}
 	}
 
