@@ -21,12 +21,16 @@ public class AndSentence implements Sentence {
 	}
 	@Override
 	public Sentence reduce() {
-		return new AndSentence(alpha.reduce(), beta.reduce());
+		return reduce(Integer.MAX_VALUE);
 	}
 	@Override
-	public Sentence reduceOnce() {
-		return new AndSentence(alpha.reduceOnce(), beta.reduceOnce());
+	public Sentence reduce(int times) {
+		if (times <= 0) {
+			return this;
+		}
+		return new AndSentence(alpha.reduce(times - 1), beta.reduce(times - 1));
 	}
+	
 	public String toString() {
 		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
 		boolean betaIsAtomic = beta instanceof AtomicSentence;

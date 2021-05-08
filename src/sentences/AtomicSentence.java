@@ -26,7 +26,7 @@ public class AtomicSentence implements Sentence {
 		return this;
 	}
 	@Override
-	public Sentence reduceOnce() {
+	public Sentence reduce(int times) {
 		return this;
 	}
 	public Sentence switchValue() {

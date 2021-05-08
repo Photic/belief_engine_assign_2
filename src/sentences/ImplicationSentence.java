@@ -22,12 +22,16 @@ public class ImplicationSentence implements Sentence {
 	}
 	@Override
 	public Sentence reduce() {
-		return new OrSentence(new NotSentence(alpha), beta).reduce();
+		return reduce(Integer.MAX_VALUE);
 	}
 	@Override
-	public Sentence reduceOnce() {
-		return new OrSentence(new NotSentence(alpha), beta);
+	public Sentence reduce(int times) {
+		if (times <= 0) {
+			return this;
+		}
+		return new OrSentence(new NotSentence(alpha), beta).reduce(times - 1);
 	}
+	
 	public String toString() {
 		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
 		boolean betaIsAtomic = beta instanceof AtomicSentence;

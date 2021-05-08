@@ -24,17 +24,17 @@ public class BiimplicationSentence implements Sentence {
 	}
 	@Override
 	public Sentence reduce() {
-		return new AndSentence(
-				new ImplicationSentence(alpha, beta),
-				new ImplicationSentence(beta, alpha)
-				).reduce();
+		return reduce(Integer.MAX_VALUE);
 	}
 	@Override
-	public Sentence reduceOnce() {
+	public Sentence reduce(int times) {
+		if (times <= 0) {
+			return this;
+		}
 		return new AndSentence(
 				new ImplicationSentence(alpha, beta),
 				new ImplicationSentence(beta, alpha)
-				);
+				).reduce(times - 1);
 	}
 	public String toString() {
 		boolean alphaIsAtomic = alpha instanceof AtomicSentence;

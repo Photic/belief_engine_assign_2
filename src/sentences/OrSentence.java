@@ -22,36 +22,28 @@ public class OrSentence implements Sentence {
 	}
 	@Override
 	public Sentence reduce() {
-		if (beta instanceof AndSentence) {
-			return new AndSentence(
-					new OrSentence(alpha, ((AndSentence) beta).getAlpha()),
-					new OrSentence(alpha, ((AndSentence) beta).getBeta())
-					).reduce();
-		} else if (alpha instanceof AndSentence) {
-			return new AndSentence(
-					new OrSentence(((AndSentence) alpha).getAlpha(), beta),
-					new OrSentence(((AndSentence) alpha).getBeta(), beta)
-					).reduce();
-		} else {
-			return new OrSentence(alpha.reduce(),beta.reduce().reduce());
-		}
+		return reduce(Integer.MAX_VALUE);
 	}
 	@Override
-	public Sentence reduceOnce() {
+	public Sentence reduce(int times) {
+		if (times <= 0) {
+			return this;
+		}
 		if (beta instanceof AndSentence) {
 			return new AndSentence(
 					new OrSentence(alpha, ((AndSentence) beta).getAlpha()),
 					new OrSentence(alpha, ((AndSentence) beta).getBeta())
-					);
+					).reduce(times - 1);
 		} else if (alpha instanceof AndSentence) {
 			return new AndSentence(
 					new OrSentence(((AndSentence) alpha).getAlpha(), beta),
 					new OrSentence(((AndSentence) alpha).getBeta(), beta)
-					);
+					).reduce(times - 1);
 		} else {
-			return new OrSentence(alpha,beta);
+			return new OrSentence(alpha.reduce(times - 1),beta.reduce(times - 1));
 		}
 	}
+	
 	public String toString() {
 		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
 		boolean betaIsAtomic = beta instanceof AtomicSentence;

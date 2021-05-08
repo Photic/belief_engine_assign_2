@@ -50,9 +50,9 @@ public class RunMe {
     					)
     			);
     	System.out.println(String.format("distriTest before reduction: %s", distriTest.toString()));
-    	distriTest = distriTest.reduceOnce();
-    	System.out.println(String.format("distriTest after reduction : %s #1", distriTest.toString()));
-    	distriTest = distriTest.reduceOnce();
+    	for (int i = 0; i < 20; i++) {
+    		System.out.println(String.format("distriTest after %d reductions : %s", i, distriTest.reduce(i).toString()));    		
+    	}
     }
 }
 
