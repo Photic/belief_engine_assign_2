@@ -57,10 +57,23 @@ public class NotSentence extends Sentence {
 	}
 	public String toString() {
 		if (sentence instanceof AtomicSentence) {
-			return String.format("Not(%s)",sentence.toString());
+			return String.format("%s%s",Constants.NOT, sentence.toString());
 		} else {
-			return String.format("Not(%s)",sentence.toString());
+			return String.format("%s(%s)",Constants.NOT, sentence.toString());
 		}
+	}
+
+	public boolean equals(Object other) {
+		if (other instanceof NotSentence) {
+			return sentence.equals(((NotSentence) other).getSentence());
+		}
+		return false;
+	}
+	public int hashCode() {
+		final int prime = 43;
+	    int result = 1;
+	    result = prime * result + sentence.hashCode();
+		return result;
 	}
 
 }

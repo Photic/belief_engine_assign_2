@@ -1,30 +1,49 @@
 package model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import sentences.*;
 
 public class BeliefBase {
 
-	private Set<Clause> clauses;
+	private List<Sentence> sentences;
 	
 	public BeliefBase() {
-		clauses = new HashSet<Clause>();
+		sentences = new ArrayList<Sentence>();
 	}
-	public boolean add(Clause newClause) {
-		return clauses.add(newClause);
+	public boolean add(Sentence newSentence) {
+		if (!sentences.contains(newSentence)) {
+			return sentences.add(newSentence);
+		}
+		return false;
 	}
-	public boolean remove(Clause clause) {
-		return clauses.remove(clause);
+	public boolean add(Literal literal) {
+		Sentence converted = new AtomicSentence(literal);
+		if (!sentences.contains(converted)) {
+			return sentences.add(converted);
+		}
+		return false;
 	}
-	public Set<Clause> getClauses() {
-		return clauses;
+	public boolean remove(Sentence newSentence) {
+		return sentences.remove(newSentence);
+	}
+	public List<Sentence> getSentences() {
+		return sentences;
+	}
+	public void convertElementToCNF(int index) {
+		sentences.set(index, sentences.get(index).convertToCNF());
+	}
+	public void convertAllToCNF() {
+		for (int i = 0; i < sentences.size(); i++) {
+			convertElementToCNF(i);
+		}
 	}
 	public String toString() {
-		String result = "";
-		for (Clause clause : clauses) {
-	        result += String.format("%s %s ", clause.toString(), Constants.AND);
+		String result = "(";
+		for (Sentence sentence : sentences) {
+	        result += String.format(" %s , ", sentence.toString());
 	    }
-		result = result.substring(0,result.length()-3);
+		result = result.substring(0,result.length()-2) + ")";
 		return result;
 	}
 	public boolean equals(Object o) {
@@ -32,12 +51,11 @@ public class BeliefBase {
 			return this.hashCode() == o.hashCode();			
 		} else return false;
 	}
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 	    int result = 1;
-	    for (Clause clause : clauses) {
-	    	result = prime * result + clause.hashCode();	    	
+	    for (Sentence sentence : sentences) {
+	    	result = prime * result + sentence.hashCode();	    	
 	    }
 		return result;
 	}

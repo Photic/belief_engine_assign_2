@@ -8,7 +8,7 @@ public class AtomicSentence extends Sentence {
 	private boolean definedByLiteral;
 	
 	public AtomicSentence(Literal literal) {
-		this.literal = literal;
+		this.literal = literal.copy();
 		definedByLiteral = true;
 	}
 	public AtomicSentence(boolean value) {
@@ -51,5 +51,12 @@ public class AtomicSentence extends Sentence {
 		} else {
 			return "" + value;
 		}
+	}
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof AtomicSentence) {
+			return literal.equals(((AtomicSentence) other).getLiteral());
+		}
+		return false;
 	}
 }

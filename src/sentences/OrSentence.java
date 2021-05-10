@@ -84,4 +84,18 @@ public class OrSentence extends Sentence {
 			return String.format("(%s) %s (%s)",alpha.toString(), Constants.OR, beta.toString());
 		}
 	}
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof OrSentence) {
+			return alpha.equals(((OrSentence) other).getAlpha()) && beta.equals(((OrSentence) other).getBeta());
+		}
+		return false;
+	}
+	public int hashCode() {
+		final int prime = 61;
+	    int result = 1;
+	    result = prime * result + alpha.hashCode();
+	    result = prime * result + beta.hashCode();
+		return result;
+	}
 }

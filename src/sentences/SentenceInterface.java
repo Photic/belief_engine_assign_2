@@ -8,4 +8,6 @@ public interface SentenceInterface {
 	public Sentence reduce(int times);
 	public String toString();
 	public Sentence copy();
+	public boolean equals(Object other);
+	public int hashCode();
 }

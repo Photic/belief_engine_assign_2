@@ -61,5 +61,19 @@ public class BiimplicationSentence extends Sentence {
 			return String.format("(%s) %s (%s)",alpha.toString(), Constants.IFF, beta.toString());
 		}
 	}
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof BiimplicationSentence) {
+			return alpha.equals(((BiimplicationSentence) other).getAlpha()) && beta.equals(((BiimplicationSentence) other).getBeta());
+		}
+		return false;
+	}
+	public int hashCode() {
+		final int prime = 131;
+	    int result = 1;
+	    result = prime * result + alpha.hashCode();
+	    result = prime * result + beta.hashCode();
+		return result;
+	}
 
 }

@@ -78,5 +78,19 @@ public class AndSentence extends Sentence {
 			return String.format("(%s) %s (%s)",alpha.toString(), Constants.AND, beta.toString());
 		}
 	}
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof AndSentence) {
+			return alpha.equals(((AndSentence) other).getAlpha()) && beta.equals(((AndSentence) other).getBeta());
+		}
+		return false;
+	}
 
+	public int hashCode() {
+		final int prime = 73;
+	    int result = 1;
+	    result = prime * result + alpha.hashCode();
+	    result = prime * result + beta.hashCode();
+		return result;
+	}
 }

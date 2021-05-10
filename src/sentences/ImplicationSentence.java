@@ -55,5 +55,18 @@ public class ImplicationSentence extends Sentence {
 			return String.format("(%s) %s (%s)",alpha.toString(), Constants.IF, beta.toString());
 		}
 	}
-
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof ImplicationSentence) {
+			return alpha.equals(((ImplicationSentence) other).getAlpha()) && beta.equals(((ImplicationSentence) other).getBeta());
+		}
+		return false;
+	}
+	public int hashCode() {
+		final int prime = 107;
+	    int result = 1;
+	    result = prime * result + alpha.hashCode();
+	    result = prime * result + beta.hashCode();
+		return result;
+	}
 }

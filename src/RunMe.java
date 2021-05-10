@@ -1,11 +1,13 @@
 import java.util.Scanner;
 
+import model.BeliefBase;
 import model.Literal;
 import sentences.*;
 
 public class RunMe {
     public static void main(String args[]) {
-    	SentenceToCNFTest();
+    	//SentenceToCNFTest();
+    	beliefBaseSentenceTest();
     	/*
         Scanner scan = new Scanner(System.in);
         String line = "";
@@ -54,6 +56,34 @@ public class RunMe {
     	distriTest = sentence.convertToCNF();
     	System.out.println(String.format("Sentence after CNF conversion: %s", distriTest.toString()));
     	System.out.println(String.format("Sentence isInCNF()-evaluation: %s", distriTest.isInCNF()));
+    }
+    public static void beliefBaseSentenceTest() {
+    	BeliefBase bBase = new BeliefBase();
+    	Literal alpha = new Literal("alpha", true);
+    	Literal beta = new Literal("beta", true);
+    	Literal gamma = new Literal("gamma", true);
+    	Literal notAlpha = new Literal("alpha", false);
+    	Literal notBeta = new Literal("beta", false);
+    	Literal notGamma = new Literal("gamma", false);
+    	bBase.add(alpha);
+    	bBase.add(new OrSentence(new AtomicSentence(alpha), new AtomicSentence(notBeta)));
+    	bBase.add(new AndSentence(new AtomicSentence(notAlpha), new OrSentence(new AtomicSentence(beta), new NotSentence(new AtomicSentence(notGamma)))));
+    	bBase.add(new BiimplicationSentence(
+    				new AtomicSentence(alpha),
+    				new OrSentence(
+    					new AtomicSentence(beta),
+    					new AtomicSentence(gamma)
+    					)
+    			 ));
+    	System.out.println(bBase.toString());
+    	Literal alphaCopy = alpha.copy();
+    	System.out.println(String.format("Result of adding duplicate literal: %s",bBase.add(alphaCopy)));
+    	System.out.println(bBase.toString());
+    	bBase.convertAllToCNF();
+    	System.out.println("Result of converting to CNF: ");
+    	System.out.println(bBase.toString());
+    	
+    	
     }
 }
 
