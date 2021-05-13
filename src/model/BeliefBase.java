@@ -11,12 +11,14 @@ public class BeliefBase {
 	public BeliefBase() {
 		sentences = new ArrayList<Sentence>();
 	}
+	
 	public boolean add(Sentence newSentence) {
 		if (!sentences.contains(newSentence)) {
 			return sentences.add(newSentence);
 		}
 		return false;
 	}
+
 	public boolean add(Literal literal) {
 		Sentence converted = new AtomicSentence(literal);
 		if (!sentences.contains(converted)) {
@@ -24,33 +26,41 @@ public class BeliefBase {
 		}
 		return false;
 	}
+
 	public boolean remove(Sentence newSentence) {
 		return sentences.remove(newSentence);
 	}
+
 	public List<Sentence> getSentences() {
 		return sentences;
 	}
+
 	public void convertElementToCNF(int index) {
 		sentences.set(index, sentences.get(index).convertToCNF());
 	}
+
 	public void convertAllToCNF() {
 		for (int i = 0; i < sentences.size(); i++) {
 			convertElementToCNF(i);
 		}
 	}
+
 	public String toString() {
 		String result = "(";
 		for (Sentence sentence : sentences) {
-	        result += String.format(" %s , ", sentence.toString());
-	    }
-		result = result.substring(0,result.length()-2) + ")";
+			result += String.format(" %s , ", sentence.toString());
+		}
+		result = result.substring(0, result.length() - 2) + ")";
 		return result;
 	}
+	
 	public boolean equals(Object o) {
 		if (o instanceof BeliefBase) {
-			return this.hashCode() == o.hashCode();			
-		} else return false;
+			return this.hashCode() == o.hashCode();
+		} else
+			return false;
 	}
+	
 	public int hashCode() {
 		final int prime = 31;
 	    int result = 1;
