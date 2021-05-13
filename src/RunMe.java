@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+import control.UserInputControl;
 import model.BeliefBase;
 import model.Literal;
 import sentences.*;
@@ -7,17 +8,19 @@ import sentences.*;
 public class RunMe {
     public static void main(String args[]) {
     	//SentenceToCNFTest();
-    	beliefBaseSentenceTest();
-    	/*
+    	//beliefBaseSentenceTest();
         Scanner scan = new Scanner(System.in);
-        String line = "";
+		String line = "";
+		UserInputControl user = new UserInputControl();
 
-        while (!line.equals("q")) {
-            line = input(scan);
+		user.splitIntoBeliefBaseSentences();
 
-        }
-
-        System.out.println("Agent have Exited");*/
+		// while (!line.equals("q")) {
+		// 	line = input(scan);
+			
+		// }
+		
+        System.out.println("Agent have Exited");
     }
 
 	public static String input(Scanner scan) {
