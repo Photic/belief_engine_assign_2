@@ -44,8 +44,7 @@ public class AtomicSentence extends Sentence {
 	public boolean isInCNF() {
 		return true;
 	}
-
-	public Sentence switchValue() {
+	public AtomicSentence switchValue() {
 		if (definedByLiteral) {
 			literal.setValue(!literal.getValue());
 		} else {

@@ -7,8 +7,8 @@ public class OrSentence extends Sentence {
 	private Sentence beta;
 	
 	public OrSentence(Sentence alpha, Sentence beta) {
-		this.alpha = alpha;
-		this.beta = beta;
+		this.alpha = alpha.copy();
+		this.beta = beta.copy();
 	}
 
 	public Sentence getAlpha() {
@@ -58,12 +58,24 @@ public class OrSentence extends Sentence {
 		boolean betaIsOr = beta instanceof OrSentence;
 		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
 		boolean betaIsAtomic = beta instanceof AtomicSentence;
-
+		boolean alphaIsNot = alpha instanceof NotSentence;
+		boolean betaIsNot = beta instanceof NotSentence;
+		
 		if (alphaIsAtomic && betaIsOr) {
 			return alpha.isInCNF() && beta.isInCNF();
 		} else if (alphaIsOr && betaIsAtomic) {
 			return alpha.isInCNF() && beta.isInCNF();
 		} else if (alphaIsAtomic && betaIsAtomic) {
+			return alpha.isInCNF() && beta.isInCNF();
+		} else if (alphaIsNot && betaIsOr) {
+			return alpha.isInCNF() && beta.isInCNF();
+		} else if (alphaIsOr && betaIsNot) {
+			return alpha.isInCNF() && beta.isInCNF();
+		} else if (alphaIsAtomic && betaIsNot) {
+			return alpha.isInCNF() && beta.isInCNF();
+		} else if (alphaIsNot && betaIsAtomic) {
+			return alpha.isInCNF() && beta.isInCNF();
+		} else if (alphaIsNot && betaIsNot) {
 			return alpha.isInCNF() && beta.isInCNF();
 		}
 		return false;

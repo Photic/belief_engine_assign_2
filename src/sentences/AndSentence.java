@@ -6,8 +6,8 @@ public class AndSentence extends Sentence {
 	private Sentence beta;
 	
 	public AndSentence(Sentence alpha, Sentence beta) {
-		this.alpha = alpha;
-		this.beta = beta;
+		this.alpha = alpha.copy();
+		this.beta = beta.copy();
 	}
 
 	public Sentence getAlpha() {
@@ -45,19 +45,16 @@ public class AndSentence extends Sentence {
 
 	@Override
 	public boolean isInCNF() {
-		boolean alphaIsAnd = alpha instanceof AndSentence;
-		boolean betaIsAnd = beta instanceof AndSentence;
-		boolean alphaIsOr = alpha instanceof OrSentence;
-		boolean betaIsOr = beta instanceof OrSentence;
-
-		if (alphaIsAnd && betaIsOr) {
-			return alpha.isInCNF() && beta.isInCNF();
-		} else if (alphaIsOr && betaIsAnd) {
-			return alpha.isInCNF() && beta.isInCNF();
-		} else if (alphaIsOr && betaIsOr) {
-			return alpha.isInCNF() && beta.isInCNF();
+		boolean alphaIsIfThen = alpha instanceof ImplicationSentence;
+		boolean betaIsIfThen = beta instanceof ImplicationSentence;
+		boolean alphaIsIFF = alpha instanceof BiimplicationSentence;
+		boolean betaIsIFF = beta instanceof BiimplicationSentence;
+		
+		if (alphaIsIfThen || betaIsIfThen || alphaIsIFF || betaIsIFF) {
+			return false;
 		}
-		return false;
+		return alpha.isInCNF() && beta.isInCNF();
+
 	}
 	
 	@Override
