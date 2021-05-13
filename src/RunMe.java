@@ -5,7 +5,7 @@ import model.Literal;
 import sentences.*;
 
 public class RunMe {
-    public static void main(String args[]) {
+    public static void main(String args[]) throws Exception {
     	//SentenceToCNFTest();
     	beliefBaseSentenceTest();
     	/*
@@ -24,7 +24,7 @@ public class RunMe {
         System.out.print("Give input to agent: ");
         return scan.nextLine();
     }
-    public static void SentenceToCNFTest() {
+    public static void SentenceToCNFTest() throws Exception {
     	Literal b11 = new Literal("b11", true);
     	Literal p12 = new Literal("p12", true);
     	Literal p21 = new Literal("p21", true);
@@ -57,7 +57,7 @@ public class RunMe {
     	System.out.println(String.format("Sentence after CNF conversion: %s", distriTest.toString()));
     	System.out.println(String.format("Sentence isInCNF()-evaluation: %s", distriTest.isInCNF()));
     }
-    public static void beliefBaseSentenceTest() {
+    public static void beliefBaseSentenceTest() throws Exception {
     	BeliefBase bBase = new BeliefBase();
     	Literal alpha = new Literal("alpha", true);
     	Literal beta = new Literal("beta", true);

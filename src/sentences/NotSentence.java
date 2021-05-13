@@ -5,7 +5,7 @@ public class NotSentence extends Sentence {
 	private Sentence sentence;
 	
 	public NotSentence(Sentence sentence) {
-		this.sentence = sentence;
+		this.sentence = sentence.copy();
 	}
 	
 	@Override
@@ -33,9 +33,11 @@ public class NotSentence extends Sentence {
 					).reduce(times - 1);
 			
 		} else if (sentence instanceof NotSentence) { // Double-negation elimination
-			return ((NotSentence) sentence).getSentence().reduce(times - 1);
+			Sentence sentenceOfSentence = ((NotSentence) sentence).getSentence();
+			return sentenceOfSentence.reduce(times - 1);
 		} else if (sentence instanceof AtomicSentence) {
-			return ((AtomicSentence) sentence).switchValue();
+			sentence = ((AtomicSentence) sentence).switchValue();
+			return sentence;
 		} else {
 			return sentence.reduce(times - 1);			
 		}
@@ -47,20 +49,16 @@ public class NotSentence extends Sentence {
 	}
 	@Override
 	public boolean isInCNF() {
-		if (!(sentence instanceof AtomicSentence)) {
-			return false;
+		if (sentence instanceof AtomicSentence) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 	public Sentence getSentence() {
 		return sentence;
 	}
 	public String toString() {
-		if (sentence instanceof AtomicSentence) {
-			return String.format("%s%s",Constants.NOT, sentence.toString());
-		} else {
-			return String.format("%s(%s)",Constants.NOT, sentence.toString());
-		}
+		return String.format("%s(%s)",Constants.NOT, sentence.toString());
 	}
 
 	public boolean equals(Object other) {

@@ -7,8 +7,8 @@ public class BiimplicationSentence extends Sentence {
 	private Sentence beta;
 	
 	public BiimplicationSentence(Sentence alpha, Sentence beta) {
-		this.alpha = alpha;
-		this.beta = beta;
+		this.alpha = alpha.copy();
+		this.beta = beta.copy();
 	}
 	public Sentence getAlpha() {
 		return alpha;

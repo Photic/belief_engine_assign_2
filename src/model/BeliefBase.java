@@ -27,15 +27,18 @@ public class BeliefBase {
 	public boolean remove(Sentence newSentence) {
 		return sentences.remove(newSentence);
 	}
+	public boolean remove(int index) {
+		return remove(sentences.get(index));
+	}
 	public List<Sentence> getSentences() {
 		return sentences;
 	}
-	public void convertElementToCNF(int index) {
+	public void convertToCNF(int index) throws Exception {
 		sentences.set(index, sentences.get(index).convertToCNF());
 	}
-	public void convertAllToCNF() {
+	public void convertAllToCNF() throws Exception {
 		for (int i = 0; i < sentences.size(); i++) {
-			convertElementToCNF(i);
+			convertToCNF(i);
 		}
 	}
 	public String toString() {

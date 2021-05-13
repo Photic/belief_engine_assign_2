@@ -1,9 +1,9 @@
 package sentences;
 
-public interface SentenceInterface {
+public interface ISentence {
 	public boolean getValue();
 	public boolean isInCNF();
-	public Sentence convertToCNF();
+	public Sentence convertToCNF() throws Exception;
 	public Sentence reduce();
 	public Sentence reduce(int times);
 	public String toString();
