@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 import model.BeliefBase;
-import model.Literal;
 import sentences.*;
 
 public class RunMe {
@@ -25,9 +24,9 @@ public class RunMe {
         return scan.nextLine();
     }
     public static void SentenceToCNFTest() throws Exception {
-    	Literal b11 = new Literal("b11", true);
-    	Literal p12 = new Literal("p12", true);
-    	Literal p21 = new Literal("p21", true);
+    	String b11 = "b11";
+    	String p12 = "p12";
+    	String p21 = "p21";
     	
     	Sentence sentence = new BiimplicationSentence(
     			new AtomicSentence(b11),
@@ -41,9 +40,9 @@ public class RunMe {
     	System.out.println(String.format("Sentence after CNF conversion: %s", sentence.toString()));
     	System.out.println(String.format("Sentence isInCNF()-evaluation: %s", sentence.isInCNF()));
     	
-    	Literal alpha = new Literal("alpha", false);
-    	Literal beta = new Literal("beta", true);
-    	Literal gamma = new Literal("gamma", true);
+    	String alpha = "alpha";
+    	String beta = "beta";
+    	String gamma = "gamma";
     	
     	Sentence distriTest = new BiimplicationSentence(
     			new AtomicSentence(alpha),
@@ -59,16 +58,14 @@ public class RunMe {
     }
     public static void beliefBaseSentenceTest() throws Exception {
     	BeliefBase bBase = new BeliefBase();
-    	Literal alpha = new Literal("alpha", true);
-    	Literal beta = new Literal("beta", true);
-    	Literal gamma = new Literal("gamma", true);
-    	Literal notAlpha = new Literal("alpha", false);
-    	Literal notBeta = new Literal("beta", false);
-		Literal notGamma = new Literal("gamma", false);
+    	String alpha = "alpha";
+    	String beta = "beta";
+    	String gamma = "gamma";
+
 		
     	bBase.add(alpha);
-    	bBase.add(new OrSentence(new AtomicSentence(alpha), new AtomicSentence(notBeta)));
-    	bBase.add(new AndSentence(new AtomicSentence(notAlpha), new OrSentence(new AtomicSentence(beta), new NotSentence(new AtomicSentence(notGamma)))));
+    	bBase.add(new OrSentence(new AtomicSentence(alpha), new NotSentence(new AtomicSentence(beta))));
+    	bBase.add(new AndSentence(new NotSentence(new AtomicSentence(alpha)), new OrSentence(new AtomicSentence(beta), new NotSentence(new NotSentence(new AtomicSentence(gamma))))));
     	bBase.add(new BiimplicationSentence(
     				new AtomicSentence(alpha),
     				new OrSentence(
@@ -78,8 +75,8 @@ public class RunMe {
 		));
 				 
     	System.out.println(bBase.toString());
-    	Literal alphaCopy = alpha.copy();
-    	System.out.println(String.format("Result of adding duplicate literal: %s", bBase.add(alphaCopy)));
+    	String alphaCopy = "alpha";
+    	System.out.println(String.format("Result of adding duplicate String: %s", bBase.add(alphaCopy)));
     	System.out.println(bBase.toString());
     	bBase.convertAllToCNF();
     	System.out.println("Result of converting to CNF: ");

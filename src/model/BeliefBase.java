@@ -19,8 +19,8 @@ public class BeliefBase {
 		return false;
 	}
 
-	public boolean add(Literal literal) {
-		Sentence converted = new AtomicSentence(literal);
+	public boolean add(String name) {
+		Sentence converted = new AtomicSentence(name);
 		if (!sentences.contains(converted)) {
 			return sentences.add(converted);
 		}

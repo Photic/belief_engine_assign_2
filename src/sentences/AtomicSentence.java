@@ -1,28 +1,17 @@
 package sentences;
 
-import model.Literal;
-
 public class AtomicSentence extends Sentence {
-	private Literal literal;
-	private boolean value;
-	private boolean definedByLiteral;
+	private String name;
 	
-	public AtomicSentence(Literal literal) {
-		this.literal = literal.copy();
-		definedByLiteral = true;
+	public AtomicSentence(String name) {
+		this.name = name;
 	}
-	
-	public AtomicSentence(boolean value) {
-		this.value = value;
+	public String getName() {
+		return name;
 	}
-
-	public Literal getLiteral() {
-		return definedByLiteral ? literal : null;
-	}
-
 	@Override
 	public boolean getValue() {
-		return definedByLiteral ? literal.getValue() : value;
+		return true;
 	}
 
 	@Override
@@ -37,35 +26,30 @@ public class AtomicSentence extends Sentence {
 
 	@Override
 	public Sentence copy() {
-		return new AtomicSentence(literal.copy());
+		return new AtomicSentence(name);
 	}
 
 	@Override
 	public boolean isInCNF() {
 		return true;
 	}
-	public AtomicSentence switchValue() {
-		if (definedByLiteral) {
-			literal.setValue(!literal.getValue());
-		} else {
-			value = !value;
-		}
-		return this;
-	}
 
 	public String toString() {
-		if (definedByLiteral) {
-			return literal.toString();
-		} else {
-			return "" + value;
-		}
+		return name;
 	}
 	
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof AtomicSentence) {
-			return literal.equals(((AtomicSentence) other).getLiteral());
+			return name.equals(((AtomicSentence) other).getName());
 		}
 		return false;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 17;
+	    int result = 1;
+	    result = prime * result + name.hashCode();
+		return result;
 	}
 }
