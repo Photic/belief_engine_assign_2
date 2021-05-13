@@ -14,6 +14,7 @@ public abstract class Sentence implements SentenceInterface {
 				return this;
 			}
 		}
+		
 		return cnfSentence;
 	}
 }
