@@ -9,20 +9,25 @@ public class AndSentence extends Sentence {
 		this.alpha = alpha;
 		this.beta = beta;
 	}
+
 	public Sentence getAlpha() {
 		return alpha;
 	}
+
 	public Sentence getBeta() {
 		return beta;
 	}
+
 	@Override
 	public boolean getValue() {
 		return alpha.getValue() && beta.getValue();
 	}
+
 	@Override
 	public Sentence reduce() {
 		return reduce(Integer.MAX_VALUE);
 	}
+
 	@Override
 	public Sentence reduce(int times) {
 		if (times <= 0) {
@@ -30,19 +35,21 @@ public class AndSentence extends Sentence {
 		}
 		return new AndSentence(alpha.reduce(times - 1), beta.reduce(times - 1));
 	}
+
 	@Override
 	public Sentence copy() {
 		Sentence alphaCopy = alpha.copy();
 		Sentence betaCopy = beta.copy();
 		return new AndSentence(alphaCopy, betaCopy);
 	}
+
 	@Override
 	public boolean isInCNF() {
 		boolean alphaIsAnd = alpha instanceof AndSentence;
 		boolean betaIsAnd = beta instanceof AndSentence;
 		boolean alphaIsOr = alpha instanceof OrSentence;
 		boolean betaIsOr = beta instanceof OrSentence;
-		
+
 		if (alphaIsAnd && betaIsOr) {
 			return alpha.isInCNF() && beta.isInCNF();
 		} else if (alphaIsOr && betaIsAnd) {
@@ -52,32 +59,31 @@ public class AndSentence extends Sentence {
 		}
 		return false;
 	}
+	
 	@Override
 	public String toString() {
 		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
 		boolean betaIsAtomic = beta instanceof AtomicSentence;
-		
+
 		if (alphaIsAtomic && betaIsAtomic) {
-			return String.format("%s %s %s",alpha.toString(), Constants.AND, beta.toString());
-		}
-		else if (alphaIsAtomic && beta instanceof AndSentence) {
-			return String.format("%s %s %s",alpha.toString(), Constants.AND, beta.toString());
+			return String.format("%s %s %s", alpha.toString(), Constants.AND, beta.toString());
+		} else if (alphaIsAtomic && beta instanceof AndSentence) {
+			return String.format("%s %s %s", alpha.toString(), Constants.AND, beta.toString());
 		} else if (betaIsAtomic && alpha instanceof AndSentence) {
-			return String.format("%s %s %s",alpha.toString(), Constants.AND, beta.toString());
-		}
-		else if (!(alpha instanceof AndSentence) && beta instanceof AndSentence) {
-			return String.format("(%s) %s %s",alpha.toString(), Constants.AND, beta.toString());
+			return String.format("%s %s %s", alpha.toString(), Constants.AND, beta.toString());
+		} else if (!(alpha instanceof AndSentence) && beta instanceof AndSentence) {
+			return String.format("(%s) %s %s", alpha.toString(), Constants.AND, beta.toString());
 		} else if (!(beta instanceof AndSentence) && alpha instanceof AndSentence) {
-			return String.format("%s %s (%s)",alpha.toString(), Constants.AND, beta.toString());
-		}
-		else if (alphaIsAtomic) {
-			return String.format("%s %s (%s)",alpha.toString(), Constants.AND, beta.toString());
+			return String.format("%s %s (%s)", alpha.toString(), Constants.AND, beta.toString());
+		} else if (alphaIsAtomic) {
+			return String.format("%s %s (%s)", alpha.toString(), Constants.AND, beta.toString());
 		} else if (betaIsAtomic) {
-			return String.format("(%s) %s %s",alpha.toString(), Constants.AND, beta.toString());
+			return String.format("(%s) %s %s", alpha.toString(), Constants.AND, beta.toString());
 		} else {
-			return String.format("(%s) %s (%s)",alpha.toString(), Constants.AND, beta.toString());
+			return String.format("(%s) %s (%s)", alpha.toString(), Constants.AND, beta.toString());
 		}
 	}
+	
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof AndSentence) {
