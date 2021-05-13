@@ -64,7 +64,8 @@ public class RunMe {
     	Literal gamma = new Literal("gamma", true);
     	Literal notAlpha = new Literal("alpha", false);
     	Literal notBeta = new Literal("beta", false);
-    	Literal notGamma = new Literal("gamma", false);
+		Literal notGamma = new Literal("gamma", false);
+		
     	bBase.add(alpha);
     	bBase.add(new OrSentence(new AtomicSentence(alpha), new AtomicSentence(notBeta)));
     	bBase.add(new AndSentence(new AtomicSentence(notAlpha), new OrSentence(new AtomicSentence(beta), new NotSentence(new AtomicSentence(notGamma)))));
@@ -74,10 +75,11 @@ public class RunMe {
     					new AtomicSentence(beta),
     					new AtomicSentence(gamma)
     					)
-    			 ));
+		));
+				 
     	System.out.println(bBase.toString());
     	Literal alphaCopy = alpha.copy();
-    	System.out.println(String.format("Result of adding duplicate literal: %s",bBase.add(alphaCopy)));
+    	System.out.println(String.format("Result of adding duplicate literal: %s", bBase.add(alphaCopy)));
     	System.out.println(bBase.toString());
     	bBase.convertAllToCNF();
     	System.out.println("Result of converting to CNF: ");

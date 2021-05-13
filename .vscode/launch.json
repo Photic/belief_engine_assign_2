@@ -5,6 +5,13 @@
             "name": "Launch RunMe",
             "request": "launch",
             "mainClass": "RunMe",
+            "projectName": "belief_engine_assign_2"
+        },
+        {
+            "type": "java",
+            "name": "Launch RunMe",
+            "request": "launch",
+            "mainClass": "RunMe",
             "projectName": "belief_engine_assign_2_f6119b5e"
         }
     ]

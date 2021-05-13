@@ -11,28 +11,35 @@ public class AtomicSentence extends Sentence {
 		this.literal = literal.copy();
 		definedByLiteral = true;
 	}
+	
 	public AtomicSentence(boolean value) {
 		this.value = value;
 	}
+
 	public Literal getLiteral() {
 		return definedByLiteral ? literal : null;
 	}
+
 	@Override
 	public boolean getValue() {
 		return definedByLiteral ? literal.getValue() : value;
 	}
+
 	@Override
 	public Sentence reduce() {
 		return this;
 	}
+
 	@Override
 	public Sentence reduce(int times) {
 		return this;
 	}
+
 	@Override
 	public Sentence copy() {
 		return new AtomicSentence(literal.copy());
 	}
+
 	@Override
 	public boolean isInCNF() {
 		return true;
@@ -45,6 +52,7 @@ public class AtomicSentence extends Sentence {
 		}
 		return this;
 	}
+
 	public String toString() {
 		if (definedByLiteral) {
 			return literal.toString();
@@ -52,6 +60,7 @@ public class AtomicSentence extends Sentence {
 			return "" + value;
 		}
 	}
+	
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof AtomicSentence) {
