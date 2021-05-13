@@ -33,9 +33,6 @@ public class NotSentence extends Sentence {
 		} else if (sentence instanceof NotSentence) { // Double-negation elimination
 			Sentence sentenceOfSentence = ((NotSentence) sentence).getSentence();
 			return sentenceOfSentence.reduce(times - 1);
-		} else if (sentence instanceof AtomicSentence) {
-			sentence = ((AtomicSentence) sentence).switchValue();
-			return sentence;
 		} else {
 			return sentence.reduce(times - 1);
 		}
