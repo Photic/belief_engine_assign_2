@@ -52,6 +52,8 @@ public class AndSentence extends Sentence {
 		
 		if (alphaIsIfThen || betaIsIfThen || alphaIsIFF || betaIsIFF) {
 			return false;
+		} else if (alpha instanceof AndSentence && beta instanceof AndSentence) {
+			return false;
 		}
 		return alpha.isInCNF() && beta.isInCNF();
 

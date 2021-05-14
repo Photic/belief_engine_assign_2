@@ -62,7 +62,6 @@ public class RunMe {
     	String beta = "beta";
     	String gamma = "gamma";
 
-		
     	bBase.add(alpha);
     	bBase.add(new OrSentence(new AtomicSentence(alpha), new NotSentence(new AtomicSentence(beta))));
     	bBase.add(new AndSentence(new NotSentence(new AtomicSentence(alpha)), new OrSentence(new AtomicSentence(beta), new NotSentence(new NotSentence(new AtomicSentence(gamma))))));

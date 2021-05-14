@@ -34,7 +34,7 @@ public class NotSentence extends Sentence {
 			Sentence sentenceOfSentence = ((NotSentence) sentence).getSentence();
 			return sentenceOfSentence.reduce(times - 1);
 		} else {
-			return sentence.reduce(times - 1);
+			return new NotSentence(sentence.reduce(times - 1));
 		}
 	}
 	

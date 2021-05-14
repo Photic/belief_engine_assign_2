@@ -37,12 +37,45 @@ public class BeliefBase {
 		return sentences;
 	}
 	public void convertToCNF(int index) throws Exception {
-		sentences.set(index, sentences.get(index).convertToCNF());
+		convertToCNF(sentences, index);
+	}
+	private void convertToCNF(List<Sentence> beliefBase,int index) throws Exception {
+		beliefBase.set(index, beliefBase.get(index).convertToCNF());
 	}
 	public void convertAllToCNF() throws Exception {
-		for (int i = 0; i < sentences.size(); i++) {
+		convertAllToCNF(sentences);
+	}
+	private void convertAllToCNF(List<Sentence> beliefBase) throws Exception {
+		for (int i = 0; i < beliefBase.size(); i++) {
 			convertToCNF(i);
 		}
+	}
+	public void contract(Sentence newSentence) {
+		sentences.remove(newSentence);
+		try {
+			Sentence newSentenceCNF = newSentence.convertToCNF();
+			List<Sentence> bbOnCNF = new ArrayList<Sentence>();
+			bbOnCNF.addAll(sentences);
+			convertAllToCNF(bbOnCNF);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void contract(String name) {
+		Sentence converted = new AtomicSentence(name);
+		contract(converted);
+	}
+	public void revise(Sentence newSentence) {
+		if (!sentences.contains(newSentence)) {
+			// Contract by not(newSentence)
+			sentences.add(newSentence);
+			
+		}
+	}
+	public void revise(String name) {
+		Sentence converted = new AtomicSentence(name);
+		revise(converted);
 	}
 
 	public String toString() {
