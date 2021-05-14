@@ -26,7 +26,7 @@ public class UserInputControl {
     }
 
     public void splitIntoBeliefBaseSentences() {
-        String input = "( alpha ,  alpha | !beta ,  !alpha & (beta | (!!gamma)) , alpha <=> ((beta | gamma)), !beta )";
+        String input = "( alpha ,  alpha | !beta ,  !alpha & (beta | (!!gamma)) , alpha <=> (beta | gamma), !beta )";
         System.out.println(input);
         input = removeLeadingAndTrailingEncapsulations(input);
         String[] split = input.split(",");
@@ -91,11 +91,9 @@ public class UserInputControl {
      */
 
     private void addResolvedSentencesToBeliefBase(List<String> resolvedSentence, BeliefBase beliefBase) {
-        List<Class> functions = new ArrayList<>();
-
         for (String string : resolvedSentence) {
             if (Pattern.matches("^.*[\\(\\)].*$", string)) {
-                // TODO, more complex sentence
+                complexBeliefBaseAddition(resolvedSentence, beliefBase);
                 return;
             }
         }
@@ -104,10 +102,48 @@ public class UserInputControl {
     }
 
     private void complexBeliefBaseAddition(List<String> sentence, BeliefBase beliefBase) {
-        
-        for (String string : sentence) {
-            
+        List<Sentence> output = new ArrayList<>();
+
+        for (int i = 0; i < sentence.size(); i++) {
+            String literal = "";
+            if (Pattern.matches("^.*[\\(].*$", sentence.get(i))) {
+                List<String> findBreath = new ArrayList<>();
+
+                for (int j = i; j < sentence.size(); j++) {
+                    if (j == i) {
+                        findBreath.add(sentence.get(j).replaceFirst("[\\(]", ""));
+                    }
+
+                    if () {
+                        
+                    }
+                }
+                
+                System.out.println("BREATH FOUND " + findBreath);
+                break;
+            } else {
+                for (String con : constants) {
+                    if (sentence.get(i).equals(con)) {
+                        output.add(findSentence(con));
+                        break;
+                    }
+                }
+
+                output.add(literalResolution(sentence.get(i)));
+            }
         }
+    }
+    
+    private Sentence findSentence(String con) {
+        if (Constants.OR.equals(con)) {
+            return new OrSentence();
+        } else if (Constants.AND.equals(con)) {
+            return new AndSentence();
+        } else if (Constants.IFF.equals(con)) {
+            return new BiimplicationSentence();
+        }
+
+        return new ImplicationSentence();
     }
 
     private void simpleBeliefBaseAddition(List<String> sentence, BeliefBase beliefBase) {
