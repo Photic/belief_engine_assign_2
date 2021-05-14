@@ -1,4 +1,7 @@
 package sentences;
+import java.util.ArrayList;
+import java.util.List;
+
 import model.Constants;
 
 public class NotSentence extends Sentence {
@@ -17,7 +20,16 @@ public class NotSentence extends Sentence {
 	public Sentence reduce() {
 		return reduce(Integer.MAX_VALUE);
 	}
-
+	protected List<Sentence> getPredicates(ArrayList<Sentence> predicates) {
+		predicates.addAll(sentence.getPredicates(predicates));
+		return predicates;
+	}
+	public boolean contains(Sentence sentence) {
+		if (this.sentence.equals(sentence)) {
+			return true;
+		}
+		return this.sentence.contains(sentence);
+	}
 	@Override
 	public Sentence reduce(int times) {
 		if (times <= 0) {

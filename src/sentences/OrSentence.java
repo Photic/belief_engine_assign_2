@@ -1,5 +1,8 @@
 package sentences;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import model.Constants;
 
 public class OrSentence extends Sentence {
@@ -44,7 +47,17 @@ public class OrSentence extends Sentence {
 			return new OrSentence(alpha.reduce(times - 1), beta.reduce(times - 1));
 		}
 	}
-	
+	public boolean contains(Sentence sentence) {
+		if (alpha.equals(sentence) || beta.equals(sentence)) {
+			return true;
+		}
+		return alpha.contains(sentence) || beta.contains(sentence);
+	}
+	protected List<Sentence> getPredicates(ArrayList<Sentence> predicates) {
+		predicates.addAll(alpha.getPredicates(predicates));
+		predicates.addAll(beta.getPredicates(predicates));
+		return predicates;
+	}
 	@Override
 	public Sentence copy() {
 		Sentence alphaCopy = alpha.copy();

@@ -55,32 +55,44 @@ public class RunMe {
     	distriTest = sentence.convertToCNF();
     	System.out.println(String.format("Sentence after CNF conversion: %s", distriTest.toString()));
     	System.out.println(String.format("Sentence isInCNF()-evaluation: %s", distriTest.isInCNF()));
+    	System.out.println(String.format("distriTest predicate list: %s", distriTest.getPredicates()));
     }
     public static void beliefBaseSentenceTest() throws Exception {
     	BeliefBase bBase = new BeliefBase();
-    	String alpha = "alpha";
-    	String beta = "beta";
-    	String gamma = "gamma";
-
-    	bBase.add(alpha);
-    	bBase.add(new OrSentence(new AtomicSentence(alpha), new NotSentence(new AtomicSentence(beta))));
-    	bBase.add(new AndSentence(new NotSentence(new AtomicSentence(alpha)), new OrSentence(new AtomicSentence(beta), new NotSentence(new NotSentence(new AtomicSentence(gamma))))));
+    	/*
+    	bBase.add("alpha");
+    	bBase.add(new OrSentence(new AtomicSentence("beta"), new NotSentence(new AtomicSentence("gamma"))));
+    	bBase.add(new AndSentence(new NotSentence(new AtomicSentence("alpha")), new OrSentence(new AtomicSentence("beta"), new NotSentence(new NotSentence(new AtomicSentence("omega"))))));
     	bBase.add(new BiimplicationSentence(
-    				new AtomicSentence(alpha),
+    				new AtomicSentence("alpha"),
     				new OrSentence(
-    					new AtomicSentence(beta),
-    					new AtomicSentence(gamma)
+    					new AtomicSentence("beta"),
+    					new AtomicSentence("gamma")
     					)
 		));
-				 
+    	*/
+    	bBase.add("p");
+    	bBase.add("q");
+    	bBase.add(new ImplicationSentence(new AtomicSentence("p"), new AtomicSentence("q")));
+    	System.out.println(bBase.toString());
+    	bBase.revise(new NotSentence(new AtomicSentence("q")));
+    	System.out.println(bBase.toString());
+    	
+    	bBase = new BeliefBase();
+    	bBase.add("p");
+    	bBase.add("q");
+    	bBase.add("r");
+    	System.out.println(bBase.toString());
+    	bBase.revise(new NotSentence(new OrSentence(new AtomicSentence("q"),new AtomicSentence("r"))));
+    	System.out.println(bBase.toString());
+    	/*
     	System.out.println(bBase.toString());
     	String alphaCopy = "alpha";
     	System.out.println(String.format("Result of adding duplicate String: %s", bBase.add(alphaCopy)));
     	System.out.println(bBase.toString());
     	bBase.convertAllToCNF();
     	System.out.println("Result of converting to CNF: ");
-    	System.out.println(bBase.toString());
-    	
+    	*/
     	
     }
 }
