@@ -158,15 +158,15 @@ public class UserInputControl {
     }
 
     private Sentence pairingSentenceResolved(String con, Pair<Sentence, Sentence> sentences) {
-        if (Constants.OR.equals(con)) {
-            return new OrSentence(sentences.first, sentences.last);
-        } else if (Constants.AND.equals(con)) {
-            return new AndSentence(sentences.first, sentences.last);
-        } else if (Constants.IFF.equals(con)) {
-            return new BiimplicationSentence(sentences.first, sentences.last);
-        } else if (Constants.IF.equals(con)) {
-            return new ImplicationSentence(sentences.first, sentences.last);
-        }
+        // if (Constants.OR.equals(con)) {
+        //     return new OrSentence(sentences.first, sentences.last);
+        // } else if (Constants.AND.equals(con)) {
+        //     return new AndSentence(sentences.first, sentences.last);
+        // } else if (Constants.IFF.equals(con)) {
+        //     return new BiimplicationSentence(sentences.first, sentences.last);
+        // } else if (Constants.IF.equals(con)) {
+        //     return new ImplicationSentence(sentences.first, sentences.last);
+        // }
 
         return null;
     }

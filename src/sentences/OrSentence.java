@@ -3,25 +3,40 @@ package sentences;
 import model.Constants;
 
 public class OrSentence extends Sentence {
-	private Sentence alpha;
-	private Sentence beta;
-	
+
 	public OrSentence(Sentence alpha, Sentence beta) {
-		this.alpha = alpha.copy();
-		this.beta = beta.copy();
+		this.setAlpha(alpha.copy());
+		this.setBeta(beta.copy());
 	}
 
-	public Sentence getAlpha() {
-		return alpha;
-	}
+	public OrSentence() {}
 
-	public Sentence getBeta() {
-		return beta;
+	public static class Builder{
+		public Sentence alpha;
+		public Sentence beta;
+
+		public Builder() {}
+
+		public void withAlpha(Sentence alpha) {
+			this.beta = alpha;
+		}
+	
+		public void withBeta(Sentence beta) {
+			this.alpha = beta;
+		}
+
+		public OrSentence build() {
+			OrSentence sent = new OrSentence();
+			sent.setAlpha(this.alpha);
+			sent.setBeta(this.beta);
+
+			return sent;
+		}
 	}
 
 	@Override
 	public boolean getValue() {
-		return alpha.getValue() || beta.getValue();
+		return this.getAlpha().getValue() || this.getBeta().getValue();
 	}
 
 	@Override
@@ -34,77 +49,77 @@ public class OrSentence extends Sentence {
 		if (times <= 0) {
 			return this;
 		}
-		if (beta instanceof AndSentence) {
-			return new AndSentence(new OrSentence(alpha.copy(), ((AndSentence) beta.copy()).getAlpha()),
-					new OrSentence(alpha.copy(), ((AndSentence) beta.copy()).getBeta())).reduce(times - 1);
-		} else if (alpha instanceof AndSentence) {
-			return new AndSentence(new OrSentence(((AndSentence) alpha.copy()).getAlpha(), beta.copy()),
-					new OrSentence(((AndSentence) alpha.copy()).getBeta(), beta.copy())).reduce(times - 1);
+		if (this.getBeta() instanceof AndSentence) {
+			return new AndSentence(new OrSentence(this.getAlpha().copy(), ((AndSentence) this.getBeta().copy()).getAlpha()),
+					new OrSentence(this.getAlpha().copy(), ((AndSentence) this.getBeta().copy()).getBeta())).reduce(times - 1);
+		} else if (this.getAlpha() instanceof AndSentence) {
+			return new AndSentence(new OrSentence(((AndSentence) this.getAlpha().copy()).getAlpha(), this.getBeta().copy()),
+					new OrSentence(((AndSentence) this.getAlpha().copy()).getBeta(), this.getBeta().copy())).reduce(times - 1);
 		} else {
-			return new OrSentence(alpha.reduce(times - 1), beta.reduce(times - 1));
+			return new OrSentence(this.getAlpha().reduce(times - 1), this.getBeta().reduce(times - 1));
 		}
 	}
 	
 	@Override
 	public Sentence copy() {
-		Sentence alphaCopy = alpha.copy();
-		Sentence betaCopy = beta.copy();
+		Sentence alphaCopy = this.getAlpha().copy();
+		Sentence betaCopy = this.getBeta().copy();
 		return new OrSentence(alphaCopy, betaCopy);
 	}
 
 	@Override
 	public boolean isInCNF() {
-		boolean alphaIsOr = alpha instanceof OrSentence;
-		boolean betaIsOr = beta instanceof OrSentence;
-		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
-		boolean betaIsAtomic = beta instanceof AtomicSentence;
-		boolean alphaIsNot = alpha instanceof NotSentence;
-		boolean betaIsNot = beta instanceof NotSentence;
+		boolean alphaIsOr = this.getAlpha() instanceof OrSentence;
+		boolean betaIsOr = this.getBeta() instanceof OrSentence;
+		boolean alphaIsAtomic = this.getAlpha() instanceof AtomicSentence;
+		boolean betaIsAtomic = this.getBeta() instanceof AtomicSentence;
+		boolean alphaIsNot = this.getAlpha() instanceof NotSentence;
+		boolean betaIsNot = this.getBeta() instanceof NotSentence;
 		
 		if (alphaIsAtomic && betaIsOr) {
-			return alpha.isInCNF() && beta.isInCNF();
+			return this.getAlpha().isInCNF() && this.getBeta().isInCNF();
 		} else if (alphaIsOr && betaIsAtomic) {
-			return alpha.isInCNF() && beta.isInCNF();
+			return this.getAlpha().isInCNF() && this.getBeta().isInCNF();
 		} else if (alphaIsAtomic && betaIsAtomic) {
-			return alpha.isInCNF() && beta.isInCNF();
+			return this.getAlpha().isInCNF() && this.getBeta().isInCNF();
 		} else if (alphaIsNot && betaIsOr) {
-			return alpha.isInCNF() && beta.isInCNF();
+			return this.getAlpha().isInCNF() && this.getBeta().isInCNF();
 		} else if (alphaIsOr && betaIsNot) {
-			return alpha.isInCNF() && beta.isInCNF();
+			return this.getAlpha().isInCNF() && this.getBeta().isInCNF();
 		} else if (alphaIsAtomic && betaIsNot) {
-			return alpha.isInCNF() && beta.isInCNF();
+			return this.getAlpha().isInCNF() && this.getBeta().isInCNF();
 		} else if (alphaIsNot && betaIsAtomic) {
-			return alpha.isInCNF() && beta.isInCNF();
+			return this.getAlpha().isInCNF() && this.getBeta().isInCNF();
 		} else if (alphaIsNot && betaIsNot) {
-			return alpha.isInCNF() && beta.isInCNF();
+			return this.getAlpha().isInCNF() && this.getBeta().isInCNF();
 		}
 		return false;
 	}
 	
 	@Override
 	public String toString() {
-		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
-		boolean betaIsAtomic = beta instanceof AtomicSentence;
+		boolean alphaIsAtomic = this.getAlpha() instanceof AtomicSentence;
+		boolean betaIsAtomic = this.getBeta() instanceof AtomicSentence;
 
 		if (alphaIsAtomic && betaIsAtomic) {
-			return String.format("%s %s %s", alpha.toString(), Constants.OR, beta.toString());
-		} else if (alphaIsAtomic && (beta instanceof OrSentence)) {
-			return String.format("%s %s %s", alpha.toString(), Constants.OR, beta.toString());
-		} else if (betaIsAtomic && (alpha instanceof OrSentence)) {
-			return String.format("%s %s %s", alpha.toString(), Constants.OR, beta.toString());
+			return String.format("%s %s %s", this.getAlpha().toString(), Constants.OR, this.getBeta().toString());
+		} else if (alphaIsAtomic && (this.getBeta() instanceof OrSentence)) {
+			return String.format("%s %s %s", this.getAlpha().toString(), Constants.OR, this.getBeta().toString());
+		} else if (betaIsAtomic && (this.getAlpha() instanceof OrSentence)) {
+			return String.format("%s %s %s", this.getAlpha().toString(), Constants.OR, this.getBeta().toString());
 		} else if (alphaIsAtomic) {
-			return String.format("%s %s (%s)", alpha.toString(), Constants.OR, beta.toString());
+			return String.format("%s %s (%s)", this.getAlpha().toString(), Constants.OR, this.getBeta().toString());
 		} else if (betaIsAtomic) {
-			return String.format("(%s) %s %s", alpha.toString(), Constants.OR, beta.toString());
+			return String.format("(%s) %s %s", this.getAlpha().toString(), Constants.OR, this.getBeta().toString());
 		} else {
-			return String.format("(%s) %s (%s)", alpha.toString(), Constants.OR, beta.toString());
+			return String.format("(%s) %s (%s)", this.getAlpha().toString(), Constants.OR, this.getBeta().toString());
 		}
 	}
 	
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof OrSentence) {
-			return alpha.equals(((OrSentence) other).getAlpha()) && beta.equals(((OrSentence) other).getBeta());
+			return this.getAlpha().equals(((OrSentence) other).getAlpha()) && this.getBeta().equals(((OrSentence) other).getBeta());
 		}
 		return false;
 	}
@@ -112,8 +127,8 @@ public class OrSentence extends Sentence {
 	public int hashCode() {
 		final int prime = 61;
 	    int result = 1;
-	    result = prime * result + alpha.hashCode();
-	    result = prime * result + beta.hashCode();
+	    result = prime * result + this.getAlpha().hashCode();
+	    result = prime * result + this.getBeta().hashCode();
 		return result;
 	}
 }
