@@ -1,6 +1,6 @@
 package sentences;
 
-abstract class BinarySentence extends Sentence{
+public abstract class BinarySentence extends Sentence {
 	private Sentence alpha;
 	private Sentence beta;
 	
