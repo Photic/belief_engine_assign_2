@@ -2,7 +2,7 @@ package sentences;
 
 import model.Constants;
 
-public class BiimplicationSentence extends Sentence {
+public class BiimplicationSentence extends BinarySentence {
 
 	public BiimplicationSentence(Sentence alpha, Sentence beta) {
 		this.setAlpha(alpha.copy());

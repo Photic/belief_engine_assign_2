@@ -76,7 +76,6 @@ public class RunMe {
     					new AtomicSentence(gamma)
     					)
 		));
-				 
     	System.out.println(bBase.toString());
     	String alphaCopy = "alpha";
     	System.out.println(String.format("Result of adding duplicate String: %s", bBase.add(alphaCopy)));

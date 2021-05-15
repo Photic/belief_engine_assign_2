@@ -2,7 +2,7 @@ package sentences;
 
 import model.Constants;
 
-public class ImplicationSentence extends Sentence {
+public class ImplicationSentence extends BinarySentence {
 
 	public ImplicationSentence(Sentence alpha, Sentence beta) {
 		this.setAlpha(alpha.copy());

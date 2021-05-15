@@ -2,7 +2,7 @@ package sentences;
 
 import model.Constants;
 
-public class OrSentence extends Sentence {
+public class OrSentence extends BinarySentence {
 
 	public OrSentence(Sentence alpha, Sentence beta) {
 		this.setAlpha(alpha.copy());
