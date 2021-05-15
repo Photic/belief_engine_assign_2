@@ -9,7 +9,9 @@ public class BiimplicationSentence extends Sentence {
 		this.setBeta(beta.copy());
 	}
 
-	public BiimplicationSentence() {}
+	public BiimplicationSentence() {
+		// Default constructor for building the class. 
+	}
 
 	public static class Builder{
 		public Sentence alpha;

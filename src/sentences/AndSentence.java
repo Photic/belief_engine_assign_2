@@ -9,7 +9,9 @@ public class AndSentence extends Sentence {
 		this.setBeta(beta.copy());
 	}
 
-	public AndSentence() {}
+	public AndSentence() {
+		// Default constructor for building the class. 
+	}
 
 	public static class Builder{
 		public Sentence alpha;
