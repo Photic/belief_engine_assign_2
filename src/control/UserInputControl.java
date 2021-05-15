@@ -114,9 +114,7 @@ public class UserInputControl {
                         findBreath.add(sentence.get(j).replaceFirst("[\\(]", ""));
                     }
 
-                    if () {
-                        
-                    }
+                    //TODO Nået her til. 
                 }
                 
                 System.out.println("BREATH FOUND " + findBreath);
