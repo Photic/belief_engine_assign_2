@@ -9,7 +9,9 @@ public class OrSentence extends BinarySentence {
 		this.setBeta(beta.copy());
 	}
 
-	public OrSentence() {}
+	public OrSentence() {
+		// Default constructor for building the class. 
+	}
 
 	public static class Builder{
 		public Sentence alpha;

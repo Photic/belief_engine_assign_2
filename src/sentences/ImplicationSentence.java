@@ -9,7 +9,9 @@ public class ImplicationSentence extends BinarySentence {
 		this.setBeta(beta.copy());
 	}
 
-	public ImplicationSentence() {}
+	public ImplicationSentence() {
+		// Default constructor for building the class. 
+	}
 
 	public static class Builder{
 		public Sentence alpha;

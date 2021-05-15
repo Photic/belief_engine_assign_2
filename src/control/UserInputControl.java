@@ -126,7 +126,6 @@ public class UserInputControl {
                         break;
                     }
                 }
-
                 output.add(literalResolution(sentence.get(i)));
             }
         }
