@@ -61,7 +61,26 @@ public class ImplicationSentence extends Sentence {
 	public boolean isInCNF() {
 		return false;
 	}
-
+	public boolean causesFalsum(List<Sentence> predicates) {
+		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
+		boolean betaIsAtomic = beta instanceof AtomicSentence;
+		
+		if (alphaIsAtomic) {
+			if (!predicates.contains(alpha) || beta.getValue()) {
+				return true;
+			}
+		} else if (betaIsAtomic) {
+			if (predicates.contains(beta) && !alpha.getValue()) {
+				return true;
+			}
+		} else if (alphaIsAtomic && betaIsAtomic) {
+			if (!predicates.contains(alpha) && predicates.contains(beta)) {
+				return true;
+			}
+		}
+		
+		return !alpha.causesFalsum(predicates) || beta.causesFalsum(predicates);
+	}
 	public String toString() {
 		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
 		boolean betaIsAtomic = beta instanceof AtomicSentence;

@@ -15,26 +15,16 @@ public class BeliefBase {
 		this.sentences = sentences;
 	}
 	
-	public boolean add(Sentence newSentence) {
+	public boolean expand(Sentence newSentence) {
 		if (!sentences.contains(newSentence)) {
 			return sentences.add(newSentence);
 		}
 		return false;
 	}
 
-	public boolean add(String name) {
+	public boolean expand(String name) {
 		Sentence converted = new AtomicSentence(name);
-		return add(converted);
-	}
-
-	public boolean remove(Sentence newSentence) {
-		return sentences.remove(newSentence);
-	}
-	public boolean remove(int index) {
-		return remove(sentences.get(index));
-	}
-	public int indexOf(Sentence sentence) {
-		return sentences.indexOf(sentence);
+		return expand(converted);
 	}
 	public List<Sentence> getSentences() {
 		return sentences;
@@ -75,12 +65,19 @@ public class BeliefBase {
 					List<Sentence> bbSentencePredicates = bbSentence.getPredicates();
 					List<Sentence> newSentencePredicates = newSentenceCNF.getPredicates();
 					
+					if (bbSentencePredicates.containsAll(newSentencePredicates) || newSentencePredicates.containsAll(bbSentencePredicates)) {
+						if (bbSentence.causesFalsum(newSentencePredicates)) {
+							sentencesToRemove.add(bbSentence);						
+					    }
+					}
+					/*
 					for (Sentence predicate : newSentencePredicates) {
 						if (bbSentencePredicates.contains(predicate)) {
 							sentencesToRemove.add(bbSentence);
 							break;
 						}
 					}
+					*/
 				}
 			}
 			for (Sentence sentence : sentencesToRemove) {

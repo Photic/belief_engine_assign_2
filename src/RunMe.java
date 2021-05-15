@@ -71,17 +71,17 @@ public class RunMe {
     					)
 		));
     	*/
-    	bBase.add("p");
-    	bBase.add("q");
-    	bBase.add(new ImplicationSentence(new AtomicSentence("p"), new AtomicSentence("q")));
+    	bBase.expand("p");
+    	bBase.expand("q");
+    	bBase.expand(new ImplicationSentence(new AtomicSentence("p"), new AtomicSentence("q")));
     	System.out.println(bBase.toString());
-    	bBase.revise(new NotSentence(new AtomicSentence("q")));
+    	bBase.revise(new NotSentence(new AtomicSentence("r")));
     	System.out.println(bBase.toString());
     	
     	bBase = new BeliefBase();
-    	bBase.add("p");
-    	bBase.add("q");
-    	bBase.add("r");
+    	bBase.expand("p");
+    	bBase.expand("q");
+    	bBase.expand("r");
     	System.out.println(bBase.toString());
     	bBase.revise(new NotSentence(new OrSentence(new AtomicSentence("q"),new AtomicSentence("r"))));
     	System.out.println(bBase.toString());
