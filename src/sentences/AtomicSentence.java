@@ -46,7 +46,7 @@ public class AtomicSentence extends Sentence {
 	public String toString() {
 		return name;
 	}
-	public boolean causesFalsum(List<Sentence> predicates) {
+	public boolean isNotValid(List<Sentence> predicates) {
 		if (predicates.contains(this)) {
 			return true;
 		}

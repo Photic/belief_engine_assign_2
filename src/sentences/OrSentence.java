@@ -53,7 +53,7 @@ public class OrSentence extends Sentence {
 		}
 		return alpha.contains(sentence) || beta.contains(sentence);
 	}
-	public boolean causesFalsum(List<Sentence> predicates) {
+	public boolean isNotValid(List<Sentence> predicates) {
 		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
 		boolean betaIsAtomic = beta instanceof AtomicSentence;
 		
@@ -71,7 +71,7 @@ public class OrSentence extends Sentence {
 			}
 		}
 		
-		return !alpha.causesFalsum(predicates) && !beta.causesFalsum(predicates);
+		return !alpha.isNotValid(predicates) && !beta.isNotValid(predicates);
 	}
 	protected List<Sentence> getPredicates(ArrayList<Sentence> predicates) {
 		predicates.addAll(alpha.getPredicates(predicates));

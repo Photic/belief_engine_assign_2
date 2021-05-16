@@ -61,7 +61,7 @@ public class ImplicationSentence extends Sentence {
 	public boolean isInCNF() {
 		return false;
 	}
-	public boolean causesFalsum(List<Sentence> predicates) {
+	public boolean isNotValid(List<Sentence> predicates) {
 		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
 		boolean betaIsAtomic = beta instanceof AtomicSentence;
 		
@@ -79,7 +79,7 @@ public class ImplicationSentence extends Sentence {
 			}
 		}
 		
-		return !alpha.causesFalsum(predicates) || beta.causesFalsum(predicates);
+		return !alpha.isNotValid(predicates) || beta.isNotValid(predicates);
 	}
 	public String toString() {
 		boolean alphaIsAtomic = alpha instanceof AtomicSentence;

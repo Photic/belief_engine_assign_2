@@ -66,7 +66,7 @@ public class BeliefBase {
 					List<Sentence> newSentencePredicates = newSentenceCNF.getPredicates();
 					
 					if (bbSentencePredicates.containsAll(newSentencePredicates) || newSentencePredicates.containsAll(bbSentencePredicates)) {
-						if (bbSentence.causesFalsum(newSentencePredicates)) {
+						if (bbSentence.isNotValid(newSentencePredicates)) {
 							sentencesToRemove.add(bbSentence);						
 					    }
 					}
