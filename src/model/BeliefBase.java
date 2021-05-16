@@ -70,22 +70,24 @@ public class BeliefBase {
 				bbOnCNF.remove(index);
 				sentences.remove(index);
 			}
-			System.out.println(String.format("Sentences after contraction: %s", sentences.toString()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	public void revise(Sentence newSentence) {
-		if (!sentences.contains(new NotSentence(newSentence))) {
-			contract(new NotSentence(newSentence));
-		}
 		if (!sentences.contains(newSentence)) {
 			expand(newSentence);
+		}
+		if (!sentences.contains(new NotSentence(newSentence))) {
+			contract(new NotSentence(newSentence));
 		}
 	}
 
 	public String toString() {
 		String result = "(";
+		if (sentences.isEmpty()) {
+			return result + " )";
+		}
 		for (Sentence sentence : sentences) {
 			result += String.format(" %s , ", sentence.toString());
 		}
