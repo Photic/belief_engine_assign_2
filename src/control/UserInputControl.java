@@ -10,7 +10,6 @@ import sentences.*;
 public class UserInputControl {
 
     private List<String> constants = new ArrayList<String>();
-    private boolean remove;
 
     public UserInputControl() {
         constants.add(Constants.AND);
@@ -20,7 +19,7 @@ public class UserInputControl {
     }
 
     public void splitIntoBeliefBaseSentences() {
-        String input = "( alpha ,  alpha | !beta , ( !alpha & (beta | (!!gamma)) , alpha <=> (beta | gamma), !beta )"; //
+        String input = "( alpha ,  alpha | !beta , ( !alpha & (beta | (!!gamma)) , alpha <=> (beta | gamma), !beta )";
         System.out.println(input);
         input = removeLeadingAndTrailingEncapsulations(input);
         String[] split = input.split(",");
@@ -35,11 +34,6 @@ public class UserInputControl {
         Collections.addAll(splitArray, split);
 
         findSingularAtomicSentences(splitArray, beliefBase);
-
-        System.out.println(beliefBase);
-        System.out.println("");
-        System.out.println("Whats Left Over");
-        System.out.println("");
 
         findMoreComplexSentences(splitArray, beliefBase);
 
@@ -117,19 +111,6 @@ public class UserInputControl {
             }
         }
 
-        System.out.println(sentence);
-        for (int k = 0; k < output.size(); k++) {
-            for (Sentence sent : output.get(k)) {
-                System.out.println(sent.getClass());
-                try {
-                    //System.out.println(sent);
-                } catch (Exception e) {
-                    //TODO: handle exception
-                }
-            }
-            System.out.println();
-        }
-
         finallyAddComplexToBeliefBase(output, beliefBase);
     }
     
@@ -145,7 +126,6 @@ public class UserInputControl {
 
         Sentence alpha = null;
         Sentence beta = null;
-        Sentence gamma = null;
 
         for (int i = output.size() - 1; i >= 0; i--) {
             for (int j = output.get(i).size() - 1; j >= 0; j--) {
@@ -180,25 +160,17 @@ public class UserInputControl {
                     System.out.println("Alpha set on top");
                     System.out.println("Coming with to Top alpha " + alpha + " and a middle " + middle);
                     top = getSentence(alpha, middle, top);
+                    middle = null;
+                    alpha = null;
                     continue;
                 }
             }
-
-            try {
-                System.out.println("We are here now and " + top.getClass() + " " + bottom.getClass());
-            } catch (Exception e) {
-                //TODO: handle exception
-            }
-
         }
         
-        System.out.println("Escaped");
-
         beliefBase.expand(top);
     }
     
     private BinarySentence getSentence(Sentence alpha, Sentence beta, BinarySentence type) {
-        //System.out.println("Incoming type with Sentence " + type.getClass());
         if (type.getClass() == OrSentence.class) {
             return new OrSentence(alpha.copy(), beta.copy());
         } else if (type.getClass() == AndSentence.class) {
@@ -211,7 +183,6 @@ public class UserInputControl {
     }
 
     private BinarySentence getSentence(Sentence alpha, BinarySentence beta, BinarySentence type) {
-        //System.out.println("Incoming type with Binary " + type.getClass());
         if (type.getClass() == OrSentence.class) {
             return new OrSentence(alpha.copy(), beta.copy().copy());
         } else if (type.getClass() == AndSentence.class) {
