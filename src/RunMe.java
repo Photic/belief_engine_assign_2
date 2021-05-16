@@ -17,10 +17,11 @@ public class RunMe {
 
 		while (!line.toLowerCase().equals("q")) {
 			if (!userInput && !preProgrammedExamples && !manipulateBB) {
-				System.out.println("\t | Menu\t");
-				System.out.println("\t | Input Belief Base\t\t\t\t\t:1 ");
-				System.out.println("\t | Examples\t\t\t\t\t\t:2");
-				System.out.println("\t | Quit Agent\t\t\t\t\t\t:q");
+				System.out.println();
+				System.out.println("\t | Menu\t\t| Type \t\t\t\t\t| Options");
+				System.out.println("\t | \t\t: Input Belief Base\t\t\t: 1 ");
+				System.out.println("\t | \t\t: Examples\t\t\t\t: 2");
+				System.out.println("\t | \t\t: Quit Agent\t\t\t\t: q");
 
 				line = input(scan, "Choose Menu Option: ");
 				if (line.toLowerCase().equals("q")) {
@@ -30,24 +31,27 @@ public class RunMe {
 				if (line.toLowerCase().equals("1")) {
 					userInput = true;
 					preProgrammedExamples = false;
-				} else {
+					continue;
+				} else if (line.toLowerCase().equals("2")) {
 					preProgrammedExamples = true;
 					userInput = false;
+					continue;
 				}
 
+				System.out.println("\t | " + line + " Is not an option");
 				continue;
 			}
 
 			if (manipulateBB) {
 				System.out.println();
-				System.out.println("\t | Menu\t");
-				System.out.println("\t | Expand\t: Belief Base with Sentence\t\t:1");
-				System.out.println("\t | Contract\t: Belief Base with Sentence\t\t:2");
-				System.out.println("\t | Revise\t: Belief Base with Sentence\t\t:3");
-				System.out.println("\t | Contain\t: Does Belief Base contain Sentence\t:4");
-				System.out.println("\t | CNF\t\t: Shown Belief Base as CNF\t\t:5");
-				System.out.println("\t | Back\t\t\t\t\t\t\t:b");
-				System.out.println("\t | Quit Agent\t\t\t\t\t\t:q");
+				System.out.println("\t | Menu\t\t| Type \t\t\t\t\t| Options");
+				System.out.println("\t | Expand\t: Belief Base with Sentence\t\t: 1");
+				System.out.println("\t | Contract\t: Belief Base with Sentence\t\t: 2");
+				System.out.println("\t | Revise\t: Belief Base with Sentence\t\t: 3");
+				System.out.println("\t | Contain\t: Does Belief Base contain Sentence\t: 4");
+				System.out.println("\t | CNF\t\t: Shown Belief Base as CNF\t\t: 5");
+				System.out.println("\t | Back\t\t\t\t\t\t\t: b");
+				System.out.println("\t | Quit Agent\t\t\t\t\t\t: q");
 
 				line = input(scan, "Choose Menu Option: ");
 				if (line.toLowerCase().equals("q")) {
@@ -109,6 +113,7 @@ public class RunMe {
 						System.out.println();
 						break;
 					default:
+						System.out.println("\t | " + line + " Is not an option");
 						break;
 				}
 
@@ -130,12 +135,12 @@ public class RunMe {
 
 			if (preProgrammedExamples) {
 				System.out.println();
-				System.out.println("\t | Menu\t");
-				System.out.println("\t | Revision Postulate Tests\t\t\t\t:1");
-				System.out.println("\t | Contraction Postulate Tests\t\t\t\t:2");
-				System.out.println("\t | Sentence To CNF Test\t\t\t\t\t:3");
-				System.out.println("\t | Back \t\t\t\t\t\t:b");
-				System.out.println("\t | Quit Agent\t\t\t\t\t\t:q");
+				System.out.println("\t | Menu\t\t| Type \t\t\t\t\t| Options");
+				System.out.println("\t | Test\t\t: Revision Postulate Tests\t\t: 1");
+				System.out.println("\t | Test\t\t: Contraction Postulate Tests\t\t: 2");
+				System.out.println("\t | Test\t\t: Sentence To CNF Test\t\t\t: 3");
+				System.out.println("\t | Back\t\t\t\t\t\t\t: b");
+				System.out.println("\t | Quit Agent\t\t\t\t\t\t: q");
 
 				line = input(scan, "Choose Menu Option: ");
 				if (line.toLowerCase().equals("q")) {
@@ -159,6 +164,7 @@ public class RunMe {
 						System.out.println();
 						break;
 					default:
+						System.out.println("\t | " + line + " Is not an option");
 						break;
 				}
 				continue;
