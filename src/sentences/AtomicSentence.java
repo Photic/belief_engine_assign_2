@@ -1,5 +1,8 @@
 package sentences;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AtomicSentence extends Sentence {
 	private String name;
 
@@ -25,7 +28,13 @@ public class AtomicSentence extends Sentence {
 	public Sentence reduce(int times) {
 		return this;
 	}
-
+	public boolean contains(Sentence sentence) {
+		return false;
+	}
+	protected List<Sentence> getPredicates(ArrayList<Sentence> predicates) {
+		predicates.add(this);
+		return predicates;
+	}
 	@Override
 	public Sentence copy() {
 		return new AtomicSentence(name);
@@ -39,7 +48,12 @@ public class AtomicSentence extends Sentence {
 	public String toString() {
 		return name;
 	}
-	
+	public boolean isNotValid(List<Sentence> predicates) {
+		if (predicates.contains(this)) {
+			return true;
+		}
+		return false;
+	}
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof AtomicSentence) {

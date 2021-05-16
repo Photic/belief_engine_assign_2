@@ -1,5 +1,8 @@
 package sentences;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import model.Constants;
 
 public class BiimplicationSentence extends BinarySentence {
@@ -56,7 +59,17 @@ public class BiimplicationSentence extends BinarySentence {
 		return new AndSentence(new ImplicationSentence(this.getAlpha().copy(), this.getBeta().copy()),
 				new ImplicationSentence(this.getBeta().copy(), this.getAlpha().copy())).reduce(times - 1);
 	}
-	
+	public boolean contains(Sentence sentence) {
+		if (alpha.equals(sentence) || beta.equals(sentence)) {
+			return true;
+		}
+		return alpha.contains(sentence) || beta.contains(sentence);
+	}
+	protected List<Sentence> getPredicates(ArrayList<Sentence> predicates) {
+		predicates.addAll(alpha.getPredicates(predicates));
+		predicates.addAll(beta.getPredicates(predicates));
+		return predicates;
+	}
 	@Override
 	public Sentence copy() {
 		Sentence alphaCopy = this.getAlpha().copy();
@@ -68,7 +81,26 @@ public class BiimplicationSentence extends BinarySentence {
 	public boolean isInCNF() {
 		return false;
 	}
-
+	public boolean isNotValid(List<Sentence> predicates) {
+		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
+		boolean betaIsAtomic = beta instanceof AtomicSentence;
+		
+		if (alphaIsAtomic) {
+			if ((!predicates.contains(alpha) || beta.getValue()) && (predicates.contains(alpha) || !beta.getValue())) {
+				return true;
+			}
+		} else if (betaIsAtomic) {
+			if ((!predicates.contains(beta) || alpha.getValue()) && (predicates.contains(beta) || !alpha.getValue())) {
+				return true;
+			}
+		} else if (alphaIsAtomic && betaIsAtomic) {
+			if ((!predicates.contains(alpha) || predicates.contains(beta)) && (predicates.contains(alpha) || !predicates.contains(beta))) {
+				return true;
+			}
+		}
+		
+		return (!predicates.contains(alpha) || predicates.contains(beta)) && (!predicates.contains(beta) || predicates.contains(alpha));
+	}
 	@Override
 	public String toString() {
 		boolean alphaIsAtomic = this.getAlpha() instanceof AtomicSentence;

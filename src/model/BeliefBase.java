@@ -11,38 +11,98 @@ public class BeliefBase {
 	public BeliefBase() {
 		sentences = new ArrayList<Sentence>();
 	}
+	public BeliefBase(List<Sentence> sentences) {
+		this.sentences = sentences;
+	}
 	
-	public boolean add(Sentence newSentence) {
+	public boolean expand(Sentence newSentence) {
 		if (!sentences.contains(newSentence)) {
 			return sentences.add(newSentence);
 		}
 		return false;
 	}
 
-	public boolean add(String name) {
+	public boolean expand(String name) {
 		Sentence converted = new AtomicSentence(name);
-		if (!sentences.contains(converted)) {
-			return sentences.add(converted);
-		}
-		return false;
-	}
-
-	public boolean remove(Sentence newSentence) {
-		return sentences.remove(newSentence);
-	}
-	public boolean remove(int index) {
-		return remove(sentences.get(index));
+		return expand(converted);
 	}
 	public List<Sentence> getSentences() {
 		return sentences;
 	}
+	public boolean contains(Sentence sentence) {
+		return sentences.contains(sentence);
+	}
 	public void convertToCNF(int index) throws Exception {
-		sentences.set(index, sentences.get(index).convertToCNF());
+		convertToCNF(sentences, index);
+	}
+	private void convertToCNF(List<Sentence> beliefBase,int index) throws Exception {
+		beliefBase.set(index, beliefBase.get(index).convertToCNF());
 	}
 	public void convertAllToCNF() throws Exception {
-		for (int i = 0; i < sentences.size(); i++) {
-			convertToCNF(i);
+		convertAllToCNF(sentences);
+	}
+	private void convertAllToCNF(List<Sentence> beliefBase) throws Exception {
+		for (int i = 0; i < beliefBase.size(); i++) {
+			convertToCNF(beliefBase, i);
 		}
+	}
+	public void contract(Sentence newSentence) {
+		sentences.remove(newSentence);
+		try {
+			Sentence newSentenceCNF = newSentence.convertToCNF();
+			List<Sentence> bbOnCNF = new ArrayList<Sentence>();
+			bbOnCNF.addAll(sentences);
+			//System.out.println(String.format("newSentence to String: %s", newSentence.toString()));
+			//System.out.println(String.format("bbOnCNF to String: %s", bbOnCNF.toString()));
+			convertAllToCNF(bbOnCNF);
+			
+			List<Sentence> sentencesToRemove = new ArrayList<Sentence>();
+			for (Sentence bbSentence : bbOnCNF) {
+				if (bbSentence.equals(newSentenceCNF)) {
+					sentencesToRemove.add(bbSentence);
+				}
+				else {
+					List<Sentence> bbSentencePredicates = bbSentence.getPredicates();
+					List<Sentence> newSentencePredicates = newSentenceCNF.getPredicates();
+					
+					if (bbSentencePredicates.containsAll(newSentencePredicates) || newSentencePredicates.containsAll(bbSentencePredicates)) {
+						if (bbSentence.isNotValid(newSentencePredicates)) {
+							sentencesToRemove.add(bbSentence);						
+					    }
+					}
+					/*
+					for (Sentence predicate : newSentencePredicates) {
+						if (bbSentencePredicates.contains(predicate)) {
+							sentencesToRemove.add(bbSentence);
+							break;
+						}
+					}
+					*/
+				}
+			}
+			for (Sentence sentence : sentencesToRemove) {
+				int index = bbOnCNF.indexOf(sentence);
+				bbOnCNF.remove(index);
+				sentences.remove(index);
+			}
+			System.out.println(String.format("Sentences after contraction: %s", sentences.toString()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void contract(String name) {
+		Sentence converted = new AtomicSentence(name);
+		contract(converted);
+	}
+	public void revise(Sentence newSentence) {
+		if (!sentences.contains(newSentence)) {
+			contract(new NotSentence(newSentence));
+			sentences.add(newSentence);
+		}
+	}
+	public void revise(String name) {
+		Sentence converted = new AtomicSentence(name);
+		revise(converted);
 	}
 
 	public String toString() {

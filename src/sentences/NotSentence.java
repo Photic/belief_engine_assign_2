@@ -1,4 +1,7 @@
 package sentences;
+import java.util.ArrayList;
+import java.util.List;
+
 import model.Constants;
 
 public class NotSentence extends Sentence {
@@ -17,7 +20,20 @@ public class NotSentence extends Sentence {
 	public Sentence reduce() {
 		return reduce(Integer.MAX_VALUE);
 	}
-
+	protected List<Sentence> getPredicates(ArrayList<Sentence> predicates) {
+		if (sentence instanceof AtomicSentence) {
+			predicates.add(this);
+		} else {
+			predicates.addAll(sentence.getPredicates(predicates));			
+		}
+		return predicates;
+	}
+	public boolean contains(Sentence sentence) {
+		if (this.sentence.equals(sentence)) {
+			return true;
+		}
+		return this.sentence.contains(sentence);
+	}
 	@Override
 	public Sentence reduce(int times) {
 		if (times <= 0) {
@@ -34,7 +50,7 @@ public class NotSentence extends Sentence {
 			Sentence sentenceOfSentence = ((NotSentence) sentence).getSentence();
 			return sentenceOfSentence.reduce(times - 1);
 		} else {
-			return sentence.reduce(times - 1);
+			return new NotSentence(sentence.reduce(times - 1));
 		}
 	}
 	
@@ -42,6 +58,14 @@ public class NotSentence extends Sentence {
 	public Sentence copy() {
 		Sentence copySentence = sentence.copy();
 		return new NotSentence(copySentence);
+	}
+	public boolean isNotValid(List<Sentence> predicates) {
+		if (sentence instanceof AtomicSentence) {
+			if (predicates.contains(sentence)) {
+				return true;
+			}
+		}
+		return sentence.isNotValid(predicates);
 	}
 
 	@Override
