@@ -71,17 +71,27 @@ public class RunMe {
     					)
 		));
     	*/
-    	bBase.expand("p");
-    	bBase.expand("q");
+    	bBase.expand(new AtomicSentence("p"));
+    	bBase.expand(new AtomicSentence("q"));
     	bBase.expand(new ImplicationSentence(new AtomicSentence("p"), new AtomicSentence("q")));
     	System.out.println(bBase.toString());
-    	bBase.revise(new NotSentence(new AtomicSentence("r")));
+    	System.out.println("Revising bBase with (!p | q)");
+    	bBase.revise(new OrSentence(new NotSentence(new AtomicSentence("p")), new AtomicSentence("q")));
+    	System.out.println(bBase.toString());
+    	bBase.clear();
+    	System.out.println("Clearing bBase");
+    	bBase.expand(new AtomicSentence("p"));
+    	bBase.expand(new AtomicSentence("q"));
+    	bBase.expand(new ImplicationSentence(new AtomicSentence("p"), new AtomicSentence("q")));
+    	System.out.println(bBase.toString());
+    	System.out.println("Revising bBase with (p => q)");
+    	bBase.revise(new ImplicationSentence(new AtomicSentence("p"), new AtomicSentence("q")));
     	System.out.println(bBase.toString());
     	
     	bBase = new BeliefBase();
-    	bBase.expand("p");
-    	bBase.expand("q");
-    	bBase.expand("r");
+    	bBase.expand(new AtomicSentence("p"));
+    	bBase.expand(new AtomicSentence("q"));
+    	bBase.expand(new AtomicSentence("r"));
     	System.out.println(bBase.toString());
     	bBase.revise(new NotSentence(new OrSentence(new AtomicSentence("q"),new AtomicSentence("r"))));
     	System.out.println(bBase.toString());
