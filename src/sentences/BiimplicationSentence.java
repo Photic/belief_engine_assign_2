@@ -41,8 +41,8 @@ public class BiimplicationSentence extends BinarySentence {
 
 	@Override
 	public boolean getValue() {
-		boolean alphaValue = this.getAlpha().getValue();
-		boolean betaValue = this.getBeta().getValue();
+		boolean alphaValue = alpha.getValue();
+		boolean betaValue = beta.getValue();
 		return (!alphaValue || betaValue) && (!betaValue || alphaValue);
 	}
 
@@ -56,8 +56,8 @@ public class BiimplicationSentence extends BinarySentence {
 		if (times <= 0) {
 			return this;
 		}
-		return new AndSentence(new ImplicationSentence(this.getAlpha().copy(), this.getBeta().copy()),
-				new ImplicationSentence(this.getBeta().copy(), this.getAlpha().copy())).reduce(times - 1);
+		return new AndSentence(new ImplicationSentence(alpha.copy(), beta.copy()),
+				new ImplicationSentence(beta.copy(), alpha.copy())).reduce(times - 1);
 	}
 	public boolean contains(Sentence sentence) {
 		if (alpha.equals(sentence) || beta.equals(sentence)) {
@@ -72,8 +72,8 @@ public class BiimplicationSentence extends BinarySentence {
 	}
 	@Override
 	public Sentence copy() {
-		Sentence alphaCopy = this.getAlpha().copy();
-		Sentence betaCopy = this.getBeta().copy();
+		Sentence alphaCopy = alpha.copy();
+		Sentence betaCopy = beta.copy();
 		return new BiimplicationSentence(alphaCopy, betaCopy);
 	}
 
@@ -103,25 +103,25 @@ public class BiimplicationSentence extends BinarySentence {
 	}
 	@Override
 	public String toString() {
-		boolean alphaIsAtomic = this.getAlpha() instanceof AtomicSentence;
-		boolean betaIsAtomic = this.getBeta() instanceof AtomicSentence;
+		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
+		boolean betaIsAtomic = beta instanceof AtomicSentence;
 
 		if (alphaIsAtomic && betaIsAtomic) {
-			return String.format("%s %s %s", this.getAlpha().toString(), Constants.IFF, this.getBeta().toString());
+			return String.format("%s %s %s", alpha.toString(), Constants.IFF, beta.toString());
 		} else if (alphaIsAtomic) {
-			return String.format("%s %s (%s)", this.getAlpha().toString(), Constants.IFF, this.getBeta().toString());
+			return String.format("%s %s (%s)", alpha.toString(), Constants.IFF, beta.toString());
 		} else if (betaIsAtomic) {
-			return String.format("(%s) %s %s", this.getAlpha().toString(), Constants.IFF, this.getBeta().toString());
+			return String.format("(%s) %s %s", alpha.toString(), Constants.IFF, beta.toString());
 		} else {
-			return String.format("(%s) %s (%s)", this.getAlpha().toString(), Constants.IFF, this.getBeta().toString());
+			return String.format("(%s) %s (%s)", alpha.toString(), Constants.IFF, beta.toString());
 		}
 	}
 	
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof BiimplicationSentence) {
-			return this.getAlpha().equals(((BiimplicationSentence) other).getAlpha())
-					&& this.getBeta().equals(((BiimplicationSentence) other).getBeta());
+			return alpha.equals(((BiimplicationSentence) other).getAlpha())
+					&& beta.equals(((BiimplicationSentence) other).getBeta());
 		}
 		return false;
 	}
@@ -129,8 +129,8 @@ public class BiimplicationSentence extends BinarySentence {
 	public int hashCode() {
 		final int prime = 131;
 	    int result = 1;
-	    result = prime * result + this.getAlpha().hashCode();
-	    result = prime * result + this.getBeta().hashCode();
+	    result = prime * result + alpha.hashCode();
+	    result = prime * result + beta.hashCode();
 		return result;
 	}
 

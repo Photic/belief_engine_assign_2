@@ -136,8 +136,6 @@ public class UserInputControl {
     private void finallyAddComplexToBeliefBase(List<List<Sentence>> output, BeliefBase beliefBase) {
 
         System.out.println();
-        System.out.println();
-        System.out.println();
 
         // TODO mangler stadig at finde ud af hvordan jeg samler det i funktioner. Tager en pause.
 
@@ -152,21 +150,37 @@ public class UserInputControl {
         for (int i = output.size() - 1; i >= 0; i--) {
             for (int j = output.get(i).size() - 1; j >= 0; j--) {
                 //System.out.println(output.get(i).get(j).getClass());
-
-                if (bottom == null && output.get(i).get(j) instanceof BinarySentence) {
+                if (middle != null && output.get(i).get(j) instanceof BinarySentence) {
+                    System.out.println("Top set to " + output.get(i).get(j).getClass());
+                    top = (BinarySentence) output.get(i).get(j);
+                    alpha = null;
+                    beta = new AtomicSentence();
+                } else if (bottom == null && output.get(i).get(j) instanceof BinarySentence) {
                     System.out.println("Bottom set to " + output.get(i).get(j).getClass());
                     bottom = (BinarySentence) output.get(i).get(j);
-                } else if (beta == null && !(output.get(i).get(j) instanceof BinarySentence)) {
+                } else if (beta == null && middle == null && !(output.get(i).get(j) instanceof BinarySentence)) {
                     System.out.println("Beta set to " + output.get(i).get(j));
                     beta = output.get(i).get(j);
                 } else if (alpha == null && !(output.get(i).get(j) instanceof BinarySentence)) {
                     System.out.println("Alpha set to " + output.get(i).get(j));
                     alpha = output.get(i).get(j);
-                } else if (bottom != null && output.get(i).get(j) instanceof BinarySentence) {
-                    System.out.println("Top set to " + output.get(i).get(j).getClass());
-                    top = (BinarySentence) output.get(i).get(j);
+                }
+
+                if (bottom != null && beta != null && alpha != null && top == null) {
+                    System.out.println("Alpha to middle " + alpha);
+                    System.out.println("Beta to middle " + beta);
+                    System.out.println("middle class " + bottom.getClass());
+                    middle = getSentence(alpha, beta, bottom);
+                    bottom = null;
                     alpha = null;
-                    beta = new AtomicSentence();
+                    beta = null;
+                    System.out.println("Middle is now " + middle);
+                    continue;
+                } else if (alpha != null && middle != null) {
+                    System.out.println("Alpha set on top");
+                    System.out.println("Coming with to Top alpha " + alpha + " and a middle " + middle);
+                    top = getSentence(alpha, middle, top);
+                    continue;
                 }
             }
 
@@ -176,89 +190,38 @@ public class UserInputControl {
                 //TODO: handle exception
             }
 
-            if (bottom != null && beta != null && alpha != null && top == null) {
-                System.out.println("Alpha to bottom " + alpha);
-                // System.out.println("Beta to bottom " + beta);
-                // System.out.println("Bottom class " + bottom.getClass());
-                bottom = getSentence(alpha, beta, bottom);
-                System.out.println("Bottom is now " + bottom);
-            } else if (alpha != null) {
-                System.out.println("Alpha set on top");
-                top = getSentence(alpha, bottom, top);
-            }
         }
+        
+        System.out.println("Escaped");
 
-        beliefBase.add(top);
-
-        // System.out.println("Sentences " + sentences);
-
-        // List<BinarySentence> outerCollectors = new ArrayList<>();
-
-        // if ((sentences.size() / 2) == collectors.size()) {
-        //     // TODO Find ud af en ordentlig måde at finde ud af om vi har for mange links. (constants)
-        // } else {
-        //     int size = 0;
-        //     for (int i = 0; i < collectors.size(); i++) {
-        //         if ((i & 2) == 0 && i != 0) {
-        //             System.out.println("MODULUS " + collectors.get(i).getClass() + " I = " + i);
-        //             outerCollectors.add(collectors.get(i));
-        //             continue;
-        //         } else {
-        //             int count = 0;
-        //             for (int j = size; j < sentences.size(); j++, size++) {
-        //                 if (count == 0) {
-        //                     System.out.println(
-        //                             "Binary = " + collectors.get(i).getClass() + " Beta = " + sentences.get(j));
-        //                     collectors.get(i).setBeta(sentences.get(j));
-        //                     count++;
-        //                 } else {
-        //                     System.out.println(
-        //                             "Binary = " + collectors.get(i).getClass() + " Alpha = " + sentences.get(j));
-        //                     collectors.get(i).setAlpha(sentences.get(j));
-        //                     size++;
-        //                     break;
-        //                 }
-        //             }
-        //         }
-        //     }
-
-        //     if (outerCollectors.size() > 0) {
-        //         if (outerCollectors.size() == 1) {
-        //             if (collectors.size() == 3) {
-        //                 outerCollectors.get(0).setBeta(collectors.get(0));
-        //                 outerCollectors.get(0).setAlpha(collectors.get(2));
-        //                 beliefBase.add(outerCollectors.get(0));
-        //             }
-        //         }
-        //     }
-        // }
+        beliefBase.expand(top);
     }
     
     private BinarySentence getSentence(Sentence alpha, Sentence beta, BinarySentence type) {
-        System.out.println("Incoming type with Sentence " + type.getClass());
+        //System.out.println("Incoming type with Sentence " + type.getClass());
         if (type.getClass() == OrSentence.class) {
-            return new OrSentence(alpha, beta);
+            return new OrSentence(alpha.copy(), beta.copy());
         } else if (type.getClass() == AndSentence.class) {
-            return new AndSentence(alpha, beta);
+            return new AndSentence(alpha.copy(), beta.copy());
         } else if (type.getClass() == ImplicationSentence.class) {
-            return new ImplicationSentence(alpha, beta);
+            return new ImplicationSentence(alpha.copy(), beta.copy());
         }
 
-        return new BiimplicationSentence(alpha, beta);
+        return new BiimplicationSentence(alpha.copy(), beta.copy());
     }
 
     private BinarySentence getSentence(Sentence alpha, BinarySentence beta, BinarySentence type) {
-        System.out.println("Incoming type with Binary " + type.getClass());
+        //System.out.println("Incoming type with Binary " + type.getClass());
         if (type.getClass() == OrSentence.class) {
-            return new OrSentence(alpha, beta);
+            return new OrSentence(alpha.copy(), beta.copy().copy());
         } else if (type.getClass() == AndSentence.class) {
-            return new AndSentence(alpha, beta);
+            return new AndSentence(alpha.copy(), beta);
         } else if (type.getClass() == ImplicationSentence.class) {
-            return new ImplicationSentence(alpha, beta);
+            return new ImplicationSentence(alpha.copy(), beta.copy());
         }
 
         System.out.println("Bi impli set");
-        return new BiimplicationSentence(alpha, beta);
+        return new BiimplicationSentence(alpha.copy(), beta.copy());
     }
     
     private int findParenthesesEnding(List<String> sentence, int i, int j, List<Sentence> builder, List<List<Sentence>> output) {
@@ -342,7 +305,7 @@ public class UserInputControl {
             isAConstant = false;
         }
 
-        beliefBase.add(pairingSentenceResolved(pairingSentence, pairs));
+        beliefBase.expand(pairingSentenceResolved(pairingSentence, pairs));
     }
 
     private Sentence literalResolution(String literal) {
@@ -460,7 +423,7 @@ public class UserInputControl {
                 }
             }
             if (add) {
-                beliefBase.add(literalResolution(string));
+                beliefBase.expand(literalResolution(string));
                 removeObj.add(string.replaceAll("\\s+", ""));
             }
             add = true;

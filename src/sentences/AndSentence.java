@@ -40,7 +40,7 @@ public class AndSentence extends BinarySentence {
 
 	@Override
 	public boolean getValue() {
-		return this.getAlpha().getValue() && this.getBeta().getValue();
+		return alpha.getValue() && beta.getValue();
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class AndSentence extends BinarySentence {
 		if (times <= 0) {
 			return this;
 		}
-		return new AndSentence(this.getAlpha().reduce(times - 1), this.getBeta().reduce(times - 1));
+		return new AndSentence(alpha.reduce(times - 1), beta.reduce(times - 1));
 	}
 	public boolean contains(Sentence sentence) {
 		if (alpha.equals(sentence) || beta.equals(sentence)) {
@@ -88,55 +88,55 @@ public class AndSentence extends BinarySentence {
 	}
 	@Override
 	public Sentence copy() {
-		Sentence alphaCopy = this.getAlpha().copy();
-		Sentence betaCopy = this.getBeta().copy();
+		Sentence alphaCopy = alpha.copy();
+		Sentence betaCopy = beta.copy();
 		return new AndSentence(alphaCopy, betaCopy);
 	}
 
 	@Override
 	public boolean isInCNF() {
-		boolean alphaIsIfThen = this.getAlpha() instanceof ImplicationSentence;
-		boolean betaIsIfThen = this.getBeta() instanceof ImplicationSentence;
-		boolean alphaIsIFF = this.getAlpha() instanceof BiimplicationSentence;
-		boolean betaIsIFF = this.getBeta() instanceof BiimplicationSentence;
+		boolean alphaIsIfThen = alpha instanceof ImplicationSentence;
+		boolean betaIsIfThen = beta instanceof ImplicationSentence;
+		boolean alphaIsIFF = alpha instanceof BiimplicationSentence;
+		boolean betaIsIFF = beta instanceof BiimplicationSentence;
 		
 		if (alphaIsIfThen || betaIsIfThen || alphaIsIFF || betaIsIFF) {
 			return false;
 		} else if (alpha instanceof AndSentence && beta instanceof AndSentence) {
 			return false;
 		}
-		return this.getAlpha().isInCNF() && this.getBeta().isInCNF();
+		return alpha.isInCNF() && beta.isInCNF();
 
 	}
 	
 	@Override
 	public String toString() {
-		boolean alphaIsAtomic = this.getAlpha() instanceof AtomicSentence;
-		boolean betaIsAtomic = this.getBeta() instanceof AtomicSentence;
+		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
+		boolean betaIsAtomic = beta instanceof AtomicSentence;
 
 		if (alphaIsAtomic && betaIsAtomic) {
-			return String.format("%s %s %s", this.getAlpha().toString(), Constants.AND, this.getBeta().toString());
-		} else if (alphaIsAtomic && this.getBeta() instanceof AndSentence) {
-			return String.format("%s %s %s", this.getAlpha().toString(), Constants.AND, this.getBeta().toString());
-		} else if (betaIsAtomic && this.getAlpha() instanceof AndSentence) {
-			return String.format("%s %s %s", this.getAlpha().toString(), Constants.AND, this.getBeta().toString());
-		} else if (!(this.getAlpha() instanceof AndSentence) && this.getBeta() instanceof AndSentence) {
-			return String.format("(%s) %s %s", this.getAlpha().toString(), Constants.AND, this.getBeta().toString());
-		} else if (!(this.getBeta() instanceof AndSentence) && this.getAlpha() instanceof AndSentence) {
-			return String.format("%s %s (%s)", this.getAlpha().toString(), Constants.AND, this.getBeta().toString());
+			return String.format("%s %s %s", alpha.toString(), Constants.AND, beta.toString());
+		} else if (alphaIsAtomic && beta instanceof AndSentence) {
+			return String.format("%s %s %s", alpha.toString(), Constants.AND, beta.toString());
+		} else if (betaIsAtomic && alpha instanceof AndSentence) {
+			return String.format("%s %s %s", alpha.toString(), Constants.AND, beta.toString());
+		} else if (!(alpha instanceof AndSentence) && beta instanceof AndSentence) {
+			return String.format("(%s) %s %s", alpha.toString(), Constants.AND, beta.toString());
+		} else if (!(beta instanceof AndSentence) && alpha instanceof AndSentence) {
+			return String.format("%s %s (%s)", alpha.toString(), Constants.AND, beta.toString());
 		} else if (alphaIsAtomic) {
-			return String.format("%s %s (%s)", this.getAlpha().toString(), Constants.AND, this.getBeta().toString());
+			return String.format("%s %s (%s)", alpha.toString(), Constants.AND, beta.toString());
 		} else if (betaIsAtomic) {
-			return String.format("(%s) %s %s", this.getAlpha().toString(), Constants.AND, this.getBeta().toString());
+			return String.format("(%s) %s %s", alpha.toString(), Constants.AND, beta.toString());
 		} else {
-			return String.format("(%s) %s (%s)", this.getAlpha().toString(), Constants.AND, this.getBeta().toString());
+			return String.format("(%s) %s (%s)", alpha.toString(), Constants.AND, beta.toString());
 		}
 	}
 	
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof AndSentence) {
-			return this.getAlpha().equals(((AndSentence) other).getAlpha()) && this.getBeta().equals(((AndSentence) other).getBeta());
+			return alpha.equals(((AndSentence) other).getAlpha()) && beta.equals(((AndSentence) other).getBeta());
 		}
 		return false;
 	}
@@ -144,8 +144,8 @@ public class AndSentence extends BinarySentence {
 	public int hashCode() {
 		final int prime = 73;
 	    int result = 1;
-	    result = prime * result + this.getAlpha().hashCode();
-	    result = prime * result + this.getBeta().hashCode();
+	    result = prime * result + alpha.hashCode();
+	    result = prime * result + beta.hashCode();
 		return result;
 	}
 }

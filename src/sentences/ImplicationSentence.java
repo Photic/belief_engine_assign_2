@@ -41,7 +41,7 @@ public class ImplicationSentence extends BinarySentence {
 
 	@Override
 	public boolean getValue() {
-		return !this.getAlpha().getValue() || this.getBeta().getValue();
+		return !alpha.getValue() || beta.getValue();
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class ImplicationSentence extends BinarySentence {
 		if (times <= 0) {
 			return this;
 		}
-		return new OrSentence(new NotSentence(this.getAlpha()), this.getBeta()).reduce(times - 1);
+		return new OrSentence(new NotSentence(alpha), beta).reduce(times - 1);
 	}
 	public boolean contains(Sentence sentence) {
 		if (alpha.equals(sentence) || beta.equals(sentence)) {
@@ -69,8 +69,8 @@ public class ImplicationSentence extends BinarySentence {
 	}
 	@Override
 	public Sentence copy() {
-		Sentence alphaCopy = this.getAlpha().copy();
-		Sentence betaCopy = this.getBeta().copy();
+		Sentence alphaCopy = alpha.copy();
+		Sentence betaCopy = beta.copy();
 		return new ImplicationSentence(alphaCopy, betaCopy);
 	}
 
@@ -99,25 +99,25 @@ public class ImplicationSentence extends BinarySentence {
 		return !alpha.isNotValid(predicates) || beta.isNotValid(predicates);
 	}
 	public String toString() {
-		boolean alphaIsAtomic = this.getAlpha() instanceof AtomicSentence;
-		boolean betaIsAtomic = this.getBeta() instanceof AtomicSentence;
+		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
+		boolean betaIsAtomic = beta instanceof AtomicSentence;
 
 		if (alphaIsAtomic && betaIsAtomic) {
-			return String.format("%s %s %s", this.getAlpha().toString(), Constants.IF, this.getBeta().toString());
+			return String.format("%s %s %s", alpha.toString(), Constants.IF, beta.toString());
 		} else if (alphaIsAtomic) {
-			return String.format("%s %s (%s)", this.getAlpha().toString(), Constants.IF, this.getBeta().toString());
+			return String.format("%s %s (%s)", alpha.toString(), Constants.IF, beta.toString());
 		} else if (betaIsAtomic) {
-			return String.format("(%s )%s %s", this.getAlpha().toString(), Constants.IF, this.getBeta().toString());
+			return String.format("(%s )%s %s", alpha.toString(), Constants.IF, beta.toString());
 		} else {
-			return String.format("(%s) %s (%s)", this.getAlpha().toString(), Constants.IF, this.getBeta().toString());
+			return String.format("(%s) %s (%s)", alpha.toString(), Constants.IF, beta.toString());
 		}
 	}
 	
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof ImplicationSentence) {
-			return this.getAlpha().equals(((ImplicationSentence) other).getAlpha())
-					&& this.getBeta().equals(((ImplicationSentence) other).getBeta());
+			return alpha.equals(((ImplicationSentence) other).getAlpha())
+					&& beta.equals(((ImplicationSentence) other).getBeta());
 		}
 		return false;
 	}
@@ -125,8 +125,8 @@ public class ImplicationSentence extends BinarySentence {
 	public int hashCode() {
 		final int prime = 107;
 	    int result = 1;
-	    result = prime * result + this.getAlpha().hashCode();
-	    result = prime * result + this.getBeta().hashCode();
+	    result = prime * result + alpha.hashCode();
+	    result = prime * result + beta.hashCode();
 		return result;
 	}
 }

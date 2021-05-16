@@ -1,8 +1,8 @@
 package sentences;
 
 public abstract class BinarySentence extends Sentence {
-	private Sentence alpha;
-	private Sentence beta;
+	protected Sentence alpha;
+	protected Sentence beta;
 	
 	public void setAlpha(Sentence alpha) {
 		this.alpha = alpha;
