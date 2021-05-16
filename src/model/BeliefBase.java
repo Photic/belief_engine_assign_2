@@ -21,11 +21,6 @@ public class BeliefBase {
 		}
 		return false;
 	}
-
-	public boolean expand(String name) {
-		Sentence converted = new AtomicSentence(name);
-		return expand(converted);
-	}
 	public List<Sentence> getSentences() {
 		return sentences;
 	}
@@ -52,8 +47,6 @@ public class BeliefBase {
 			Sentence newSentenceCNF = newSentence.convertToCNF();
 			List<Sentence> bbOnCNF = new ArrayList<Sentence>();
 			bbOnCNF.addAll(sentences);
-			//System.out.println(String.format("newSentence to String: %s", newSentence.toString()));
-			//System.out.println(String.format("bbOnCNF to String: %s", bbOnCNF.toString()));
 			convertAllToCNF(bbOnCNF);
 			
 			List<Sentence> sentencesToRemove = new ArrayList<Sentence>();
@@ -70,14 +63,6 @@ public class BeliefBase {
 							sentencesToRemove.add(bbSentence);						
 					    }
 					}
-					/*
-					for (Sentence predicate : newSentencePredicates) {
-						if (bbSentencePredicates.contains(predicate)) {
-							sentencesToRemove.add(bbSentence);
-							break;
-						}
-					}
-					*/
 				}
 			}
 			for (Sentence sentence : sentencesToRemove) {
@@ -85,33 +70,32 @@ public class BeliefBase {
 				bbOnCNF.remove(index);
 				sentences.remove(index);
 			}
-			System.out.println(String.format("Sentences after contraction: %s", sentences.toString()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	public void contract(String name) {
-		Sentence converted = new AtomicSentence(name);
-		contract(converted);
-	}
 	public void revise(Sentence newSentence) {
 		if (!sentences.contains(newSentence)) {
-			contract(new NotSentence(newSentence));
-			sentences.add(newSentence);
+			expand(newSentence);
 		}
-	}
-	public void revise(String name) {
-		Sentence converted = new AtomicSentence(name);
-		revise(converted);
+		if (!sentences.contains(new NotSentence(newSentence))) {
+			contract(new NotSentence(newSentence));
+		}
 	}
 
 	public String toString() {
 		String result = "(";
+		if (sentences.isEmpty()) {
+			return result + " )";
+		}
 		for (Sentence sentence : sentences) {
 			result += String.format(" %s , ", sentence.toString());
 		}
 		result = result.substring(0, result.length() - 2) + ")";
 		return result;
+	}
+	public void clear() {
+		sentences.clear();
 	}
 	
 	public boolean equals(Object o) {
