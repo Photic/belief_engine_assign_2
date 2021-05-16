@@ -55,13 +55,13 @@ public class NotSentence extends Sentence {
 		Sentence copySentence = sentence.copy();
 		return new NotSentence(copySentence);
 	}
-	public boolean causesFalsum(List<Sentence> predicates) {
+	public boolean isNotValid(List<Sentence> predicates) {
 		if (sentence instanceof AtomicSentence) {
 			if (predicates.contains(sentence)) {
 				return true;
 			}
 		}
-		return sentence.causesFalsum(predicates);
+		return sentence.isNotValid(predicates);
 	}
 
 	@Override

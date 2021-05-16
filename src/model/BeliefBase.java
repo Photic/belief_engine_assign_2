@@ -21,11 +21,6 @@ public class BeliefBase {
 		}
 		return false;
 	}
-
-	public boolean expand(String name) {
-		Sentence converted = new AtomicSentence(name);
-		return expand(converted);
-	}
 	public List<Sentence> getSentences() {
 		return sentences;
 	}
@@ -52,8 +47,6 @@ public class BeliefBase {
 			Sentence newSentenceCNF = newSentence.convertToCNF();
 			List<Sentence> bbOnCNF = new ArrayList<Sentence>();
 			bbOnCNF.addAll(sentences);
-			//System.out.println(String.format("newSentence to String: %s", newSentence.toString()));
-			//System.out.println(String.format("bbOnCNF to String: %s", bbOnCNF.toString()));
 			convertAllToCNF(bbOnCNF);
 			
 			List<Sentence> sentencesToRemove = new ArrayList<Sentence>();
@@ -66,18 +59,10 @@ public class BeliefBase {
 					List<Sentence> newSentencePredicates = newSentenceCNF.getPredicates();
 					
 					if (bbSentencePredicates.containsAll(newSentencePredicates) || newSentencePredicates.containsAll(bbSentencePredicates)) {
-						if (bbSentence.causesFalsum(newSentencePredicates)) {
+						if (bbSentence.isNotValid(newSentencePredicates)) {
 							sentencesToRemove.add(bbSentence);						
 					    }
 					}
-					/*
-					for (Sentence predicate : newSentencePredicates) {
-						if (bbSentencePredicates.contains(predicate)) {
-							sentencesToRemove.add(bbSentence);
-							break;
-						}
-					}
-					*/
 				}
 			}
 			for (Sentence sentence : sentencesToRemove) {
@@ -90,19 +75,13 @@ public class BeliefBase {
 			e.printStackTrace();
 		}
 	}
-	public void contract(String name) {
-		Sentence converted = new AtomicSentence(name);
-		contract(converted);
-	}
 	public void revise(Sentence newSentence) {
-		if (!sentences.contains(newSentence)) {
+		if (!sentences.contains(new NotSentence(newSentence))) {
 			contract(new NotSentence(newSentence));
-			sentences.add(newSentence);
 		}
-	}
-	public void revise(String name) {
-		Sentence converted = new AtomicSentence(name);
-		revise(converted);
+		if (!sentences.contains(newSentence)) {
+			expand(newSentence);
+		}
 	}
 
 	public String toString() {
@@ -112,6 +91,9 @@ public class BeliefBase {
 		}
 		result = result.substring(0, result.length() - 2) + ")";
 		return result;
+	}
+	public void clear() {
+		sentences.clear();
 	}
 	
 	public boolean equals(Object o) {
