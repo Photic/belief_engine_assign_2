@@ -64,7 +64,7 @@ public class BiimplicationSentence extends Sentence {
 	public boolean isInCNF() {
 		return false;
 	}
-	public boolean causesFalsum(List<Sentence> predicates) {
+	public boolean isNotValid(List<Sentence> predicates) {
 		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
 		boolean betaIsAtomic = beta instanceof AtomicSentence;
 		

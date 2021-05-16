@@ -15,5 +15,5 @@ public interface ISentence {
 	public Sentence copy();
 	public boolean equals(Object other);
 	public int hashCode();
-	public boolean causesFalsum(List<Sentence> predicates);
+	public boolean isNotValid(List<Sentence> predicates);
 }

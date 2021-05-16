@@ -49,7 +49,7 @@ public class AndSentence extends Sentence {
 		predicates.addAll(beta.getPredicates(predicates));
 		return predicates;
 	}
-	public boolean causesFalsum(List<Sentence> predicates) {
+	public boolean isNotValid(List<Sentence> predicates) {
 		boolean alphaIsAtomic = alpha instanceof AtomicSentence;
 		boolean betaIsAtomic = beta instanceof AtomicSentence;
 		
@@ -67,7 +67,7 @@ public class AndSentence extends Sentence {
 			}
 		}
 		
-		return !alpha.causesFalsum(predicates) || !beta.causesFalsum(predicates);
+		return !alpha.isNotValid(predicates) || !beta.isNotValid(predicates);
 	}
 	@Override
 	public Sentence copy() {
