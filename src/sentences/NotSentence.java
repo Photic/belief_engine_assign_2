@@ -21,7 +21,11 @@ public class NotSentence extends Sentence {
 		return reduce(Integer.MAX_VALUE);
 	}
 	protected List<Sentence> getPredicates(ArrayList<Sentence> predicates) {
-		predicates.addAll(sentence.getPredicates(predicates));
+		if (sentence instanceof AtomicSentence) {
+			predicates.add(this);
+		} else {
+			predicates.addAll(sentence.getPredicates(predicates));			
+		}
 		return predicates;
 	}
 	public boolean contains(Sentence sentence) {
