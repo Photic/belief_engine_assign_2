@@ -18,8 +18,7 @@ public class UserInputControl {
         constants.add(Constants.OR);
     }
 
-    public void splitIntoBeliefBaseSentences(String input) {
-        System.out.println(input);
+    public BeliefBase splitIntoBeliefBaseSentences(String input) {
         input = removeLeadingAndTrailingEncapsulations(input);
         String[] split = input.split(",");
 
@@ -33,10 +32,9 @@ public class UserInputControl {
         Collections.addAll(splitArray, split);
 
         findSingularAtomicSentences(splitArray, beliefBase);
-
         findMoreComplexSentences(splitArray, beliefBase);
 
-        System.out.println(beliefBase);
+        return beliefBase;
     }
 
     public void findMoreComplexSentences(List<String> split, BeliefBase beliefBase) {
@@ -49,8 +47,6 @@ public class UserInputControl {
             output = handleInputOutputList(input);
             resolvedSentences.add(output);
         }
-
-        System.out.println(resolvedSentences);
 
         for (List<String> list : resolvedSentences) {
             addResolvedSentencesToBeliefBase(list, beliefBase);
@@ -115,10 +111,6 @@ public class UserInputControl {
     
     private void finallyAddComplexToBeliefBase(List<List<Sentence>> output, BeliefBase beliefBase) {
 
-        System.out.println();
-
-        // TODO mangler stadig at finde ud af hvordan jeg samler det i funktioner. Tager en pause.
-
         BinarySentence top = null;
         BinarySentence middle = null;
         BinarySentence bottom = null;
@@ -130,15 +122,15 @@ public class UserInputControl {
             for (int j = output.get(i).size() - 1; j >= 0; j--) {
                 //System.out.println(output.get(i).get(j).getClass());
                 if (middle != null && output.get(i).get(j) instanceof BinarySentence) {
-                    System.out.println("Top set to " + output.get(i).get(j).getClass());
+                    //System.out.println("Top set to " + output.get(i).get(j).getClass());
                     top = (BinarySentence) output.get(i).get(j);
                     alpha = null;
                     beta = new AtomicSentence();
                 } else if (bottom == null && output.get(i).get(j) instanceof BinarySentence) {
-                    System.out.println("Bottom set to " + output.get(i).get(j).getClass());
+                    //System.out.println("Bottom set to " + output.get(i).get(j).getClass());
                     bottom = (BinarySentence) output.get(i).get(j);
                 } else if (beta == null && middle == null && !(output.get(i).get(j) instanceof BinarySentence)) {
-                    System.out.println("Beta set to " + output.get(i).get(j));
+                    //System.out.println("Beta set to " + output.get(i).get(j));
                     beta = output.get(i).get(j);
                 } else if (alpha == null && !(output.get(i).get(j) instanceof BinarySentence)) {
                     System.out.println("Alpha set to " + output.get(i).get(j));
@@ -146,18 +138,18 @@ public class UserInputControl {
                 }
 
                 if (bottom != null && beta != null && alpha != null && top == null) {
-                    System.out.println("Alpha to middle " + alpha);
-                    System.out.println("Beta to middle " + beta);
-                    System.out.println("middle class " + bottom.getClass());
+                    // System.out.println("Alpha to middle " + alpha);
+                    // System.out.println("Beta to middle " + beta);
+                    // System.out.println("middle class " + bottom.getClass());
                     middle = getSentence(alpha, beta, bottom);
                     bottom = null;
                     alpha = null;
                     beta = null;
-                    System.out.println("Middle is now " + middle);
+                    // System.out.println("Middle is now " + middle);
                     continue;
                 } else if (alpha != null && middle != null) {
-                    System.out.println("Alpha set on top");
-                    System.out.println("Coming with to Top alpha " + alpha + " and a middle " + middle);
+                    // System.out.println("Alpha set on top");
+                    // System.out.println("Coming with to Top alpha " + alpha + " and a middle " + middle);
                     top = getSentence(alpha, middle, top);
                     middle = null;
                     alpha = null;
@@ -190,7 +182,6 @@ public class UserInputControl {
             return new ImplicationSentence(alpha.copy(), beta.copy());
         }
 
-        System.out.println("Bi impli set");
         return new BiimplicationSentence(alpha.copy(), beta.copy());
     }
     
@@ -278,7 +269,7 @@ public class UserInputControl {
         beliefBase.expand(pairingSentenceResolved(pairingSentence, pairs));
     }
 
-    private Sentence literalResolution(String literal) {
+    public Sentence literalResolution(String literal) {
         int nots = 0;
 
         for (int i = 0; i < literal.length(); i++) {
@@ -309,11 +300,9 @@ public class UserInputControl {
             return new AndSentence(sentences.first, sentences.last);
         } else if (Constants.IFF.equals(con)) {
             return new BiimplicationSentence(sentences.first, sentences.last);
-        } else if (Constants.IF.equals(con)) {
-            return new ImplicationSentence(sentences.first, sentences.last);
         }
 
-        return null;
+        return new ImplicationSentence(sentences.first, sentences.last);
     }
 
     private List<String> handleInputOutputList(List<String> input) {

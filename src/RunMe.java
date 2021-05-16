@@ -5,33 +5,177 @@ import model.BeliefBase;
 import sentences.*;
 
 public class RunMe {
-    public static void main(String args[]) throws Exception {
-    	//SentenceToCNFTest();
-    	// beliefBaseSentenceTest();
-    	//beliefBaseSentenceTest();
-    	// contractionPostulateTests();
-		// revisionPostulateTests();
-		
+	public static void main(String args[]) throws Exception {
         Scanner scan = new Scanner(System.in);
 		String line = "";
 		UserInputControl user = new UserInputControl();
+		BeliefBase beliefBase = new BeliefBase();
 
-		while (!line.equals("q")) {
-			line = input(scan);
-			
-			if (line.length() > 10) {
-				user.splitIntoBeliefBaseSentences(line); // "( alpha ,  alpha | !beta , ( !alpha & (beta | (!!gamma)) , alpha <=> (beta | gamma), !beta )"
+		boolean userInput = false;
+		boolean preProgrammedExamples = false;
+		boolean manipulateBB = false;
+
+		while (!line.toLowerCase().equals("q")) {
+			if (!userInput && !preProgrammedExamples && !manipulateBB) {
+				System.out.println("\t | Menu\t");
+				System.out.println("\t | Input Belief Base\t\t\t\t\t:1 ");
+				System.out.println("\t | Examples\t\t\t\t\t\t:2");
+				System.out.println("\t | Quit Agent\t\t\t\t\t\t:q");
+
+				line = input(scan, "Choose Menu Option: ");
+				if (line.toLowerCase().equals("q")) {
+					continue;
+				}
+
+				if (line.toLowerCase().equals("1")) {
+					userInput = true;
+					preProgrammedExamples = false;
+				} else {
+					preProgrammedExamples = true;
+					userInput = false;
+				}
+
+				continue;
 			}
-			
+
+			if (manipulateBB) {
+				System.out.println();
+				System.out.println("\t | Menu\t");
+				System.out.println("\t | Expand\t: Belief Base with Sentence\t\t:1");
+				System.out.println("\t | Contract\t: Belief Base with Sentence\t\t:2");
+				System.out.println("\t | Revise\t: Belief Base with Sentence\t\t:3");
+				System.out.println("\t | Contain\t: Does Belief Base contain Sentence\t:4");
+				System.out.println("\t | CNF\t\t: Shown Belief Base as CNF\t\t:5");
+				System.out.println("\t | Back\t\t\t\t\t\t\t:b");
+				System.out.println("\t | Quit Agent\t\t\t\t\t\t:q");
+
+				line = input(scan, "Choose Menu Option: ");
+				if (line.toLowerCase().equals("q")) {
+					continue;
+				}
+
+				switch (line.toLowerCase()) {
+					case "1":
+						line = input(scan, "Sentence = ");
+						BeliefBase bb = user.splitIntoBeliefBaseSentences(line);
+						for (Sentence sent : bb.getSentences()) {
+							beliefBase.expand(sent);
+						}
+						System.out.println("\t | The Belief Base is now = " + beliefBase);
+						break;
+					case "2":
+						line = input(scan, "Sentence = ");
+						BeliefBase bb2 = user.splitIntoBeliefBaseSentences(line);
+						for (Sentence sent : bb2.getSentences()) {
+							beliefBase.contract(sent);
+						}
+						System.out.println("\t | The Belief Base is now = " + beliefBase);
+						break;
+					case "3":
+						line = input(scan, "Sentence = ");
+						BeliefBase bb4 = user.splitIntoBeliefBaseSentences(line);
+						for (Sentence sent : bb4.getSentences()) {
+							beliefBase.revise(sent);
+						}
+						System.out.println("\t | The Belief Base is now = " + beliefBase);
+						break;
+					case "4":
+						line = input(scan, "Sentence = ");
+						BeliefBase bb3 = user.splitIntoBeliefBaseSentences(line);
+						boolean containsSentence = false;
+						for (Sentence sent : bb3.getSentences()) {
+							containsSentence = beliefBase.contains(sent);
+						}
+						if (containsSentence) {
+							System.out.println("\t | The belief base contains the sentence = " + line);
+							System.out.println("\t | The Belief Base is = " + beliefBase);
+						} else {
+							System.out.println("\t | The belief base does not contain the sentence = " + line);
+							System.out.println("\t | The Belief Base is = " + beliefBase);
+						}
+						break;
+					case "5":
+						BeliefBase toCnf = new BeliefBase();
+						for (Sentence sent : beliefBase.getSentences()) {
+							toCnf.expand(sent);
+						}
+						toCnf.convertAllToCNF();
+						System.out.println("\t | The Belief Base as CNF = " + toCnf);
+						break;
+					case "b":
+						preProgrammedExamples = false;
+						manipulateBB = false;
+						userInput = false;
+						System.out.println();
+						break;
+					default:
+						break;
+				}
+
+				continue;
+			}
+
+			if (userInput) {
+				line = input(scan, "Belief Base = ");
+				if (line.toLowerCase().equals("q")) {
+					continue;
+				}
+
+				beliefBase = user.splitIntoBeliefBaseSentences(line);
+				System.out.println("\t | The Belief Base is now = " + beliefBase);
+				manipulateBB = true;
+				userInput = false;
+				continue;
+			}
+
+			if (preProgrammedExamples) {
+				System.out.println();
+				System.out.println("\t | Menu\t");
+				System.out.println("\t | Revision Postulate Tests\t\t\t\t:1");
+				System.out.println("\t | Contraction Postulate Tests\t\t\t\t:2");
+				System.out.println("\t | Sentence To CNF Test\t\t\t\t\t:3");
+				System.out.println("\t | Back \t\t\t\t\t\t:b");
+				System.out.println("\t | Quit Agent\t\t\t\t\t\t:q");
+
+				line = input(scan, "Choose Menu Option: ");
+				if (line.toLowerCase().equals("q")) {
+					continue;
+				}
+
+				switch (line.toLowerCase()) {
+					case "1":
+						revisionPostulateTests();
+						break;
+					case "2":
+						contractionPostulateTests();
+						break;
+					case "3":
+						SentenceToCNFTest();
+						break;
+					case "b":
+						preProgrammedExamples = false;
+						manipulateBB = false;
+						userInput = false;
+						System.out.println();
+						break;
+					default:
+						break;
+				}
+				continue;
+			}
+
 		}
-		
-        System.out.println("Agent have Exited");
+		System.out.println();
+		System.out.println("Agent have Exited");
+		System.out.println();
     }
 
-    public static String input(Scanner scan) {
-        System.out.print("Give input to agent: ");
-        return scan.nextLine();
-    }
+	public static String input(Scanner scan, String text) {
+		System.out.println();
+		System.out.print("\t | " + text);
+		return scan.nextLine();
+	}
+	
     public static void SentenceToCNFTest() throws Exception {
     	String alpha = "alpha";
     	String beta = "beta";
@@ -43,7 +187,8 @@ public class RunMe {
     					new AtomicSentence(beta),
     					new AtomicSentence(gamma)
     					)
-    			);
+		);
+				
     	System.out.println(String.format("Sentence before CNF conversion: %s", distriTest.toString()));
     	distriTest = distriTest.convertToCNF();
     	System.out.println(String.format("Sentence after CNF conversion: %s", distriTest.toString()));
@@ -51,13 +196,13 @@ public class RunMe {
     	System.out.println(String.format("distriTest predicate list: %s", distriTest.getPredicates()));
     }
     
-    public static void revisionPostulateTests() {
-    	revisionSuccess();
-    	revisionInclusion();
-    	revisionVacuity();
-    	revisionExtensionality();
-    	
-    }
+	public static void revisionPostulateTests() {
+		revisionSuccess();
+		revisionInclusion();
+		revisionVacuity();
+		revisionExtensionality();
+	}
+	
     public static void contractionPostulateTests() {
     	contractionSuccess();
     	contractionInclusion();
@@ -75,7 +220,6 @@ public class RunMe {
 		System.out.println(String.format("Elements in the belief base after contraction with q: %s", bBase));
 		System.out.println("The implication was no longer valid, and thus is it no longer in the resulting belief set");
 		System.out.println();
-		
 	}
 
 	private static void contractionInclusion() {
@@ -89,7 +233,6 @@ public class RunMe {
 		System.out.println(String.format("Elements in the belief base after contraction with r: %s", bBase));
 		System.out.println("We can see that the belief set after contraction with r is a subset of the original belief set");
 		System.out.println();
-		
 	}
 
 	private static void contractionVacuity() {
@@ -103,7 +246,6 @@ public class RunMe {
 		System.out.println(String.format("Elements in the belief base after contraction with s: %s", bBase));
 		System.out.println("Since s wasn't in the belief base, the contraction does not change the belief set");
 		System.out.println();
-		
 	}
 
 	private static void contractionExtensionality() {
@@ -126,7 +268,6 @@ public class RunMe {
 		System.out.println(String.format("Elements in the second belief base after revision with (p => q): %s", bBase2));
 		System.out.println("We can see that the contractions behave in the same way, and the extensionality postulate is fulfilled.");
 		System.out.println();
-		
 	}
 
 	private static void revisionSuccess() {
@@ -137,7 +278,6 @@ public class RunMe {
 		System.out.println(String.format("Elements in the belief base after revision with p: %s", bBase));
 		System.out.println(String.format("Does the belief base contain p?: %s", bBase.contains(new AtomicSentence("p"))));
 		System.out.println();
-		
 	}
 
 	private static void revisionInclusion() {
@@ -158,7 +298,6 @@ public class RunMe {
 		System.out.println(String.format("Elements in the second belief base after expanding with s: %s", bBase2));
 		System.out.println("We can see they contain the same elements, therefore the first belief base is a subset of the second.");
 		System.out.println();
-		
 	}
 
 	private static void revisionVacuity() {
@@ -190,7 +329,6 @@ public class RunMe {
 		System.out.println(String.format("Elements in the second belief base after revision with (p => q): %s", bBase2));
 		System.out.println("We can see that the revisions behave in the same way, and the extensionality postulate is fulfilled.");
 		System.out.println();
-		
 	}
 }
 
