@@ -142,23 +142,55 @@ public class UserInputControl {
         // TODO mangler stadig at finde ud af hvordan jeg samler det i funktioner. Tager en pause.
 
         BinarySentence top = null;
-    
-        for (int i = output.size() - 1; i >= 0; i--) {
-            BinarySentence bottom = null;
-            Sentence lastSentence = null;
+        BinarySentence middle = null;
+        BinarySentence bottom = null;
 
+        Sentence alpha = null;
+        Sentence beta = null;
+        Sentence gamma = null;
+
+        for (int i = output.size() - 1; i >= 0; i--) {
             for (int j = output.get(i).size() - 1; j >= 0; j--) {
-                System.out.println(output.get(i).get(j).getClass());
-                if (!(output.get(i).get(j) instanceof BinarySentence)) {
-                    lastSentence = output.get(i).get(j);
-                } else if (lastSentence != null) (
-                    
-                )
+                //System.out.println(output.get(i).get(j).getClass());
+
+                if (bottom == null && output.get(i).get(j) instanceof BinarySentence) {
+                    System.out.println("Bottom set to " + output.get(i).get(j).getClass());
+                    bottom = (BinarySentence) output.get(i).get(j);
+                } else if (beta == null && !(output.get(i).get(j) instanceof BinarySentence)) {
+                    System.out.println("Beta set to " + output.get(i).get(j));
+                    beta = output.get(i).get(j);
+                } else if (alpha == null && !(output.get(i).get(j) instanceof BinarySentence)) {
+                    System.out.println("Alpha set to " + output.get(i).get(j));
+                    alpha = output.get(i).get(j);
+                } else if (bottom != null && output.get(i).get(j) instanceof BinarySentence) {
+                    System.out.println("Top set to " + output.get(i).get(j).getClass());
+                    top = (BinarySentence) output.get(i).get(j);
+                    alpha = null;
+                    beta = new AtomicSentence();
+                }
             }
-            System.out.println();
+
+            try {
+                System.out.println("We are here now and " + top.getClass() + " " + bottom.getClass());
+            } catch (Exception e) {
+                //TODO: handle exception
+            }
+
+            if (bottom != null && beta != null && alpha != null && top == null) {
+                System.out.println("Alpha to bottom " + alpha);
+                // System.out.println("Beta to bottom " + beta);
+                // System.out.println("Bottom class " + bottom.getClass());
+                bottom = getSentence(alpha, beta, bottom);
+                System.out.println("Bottom is now " + bottom);
+            } else if (alpha != null) {
+                System.out.println("Alpha set on top");
+                top = getSentence(alpha, bottom, top);
+            }
         }
 
-       // System.out.println("Sentences " + sentences);
+        beliefBase.add(top);
+
+        // System.out.println("Sentences " + sentences);
 
         // List<BinarySentence> outerCollectors = new ArrayList<>();
 
@@ -200,6 +232,33 @@ public class UserInputControl {
         //         }
         //     }
         // }
+    }
+    
+    private BinarySentence getSentence(Sentence alpha, Sentence beta, BinarySentence type) {
+        System.out.println("Incoming type with Sentence " + type.getClass());
+        if (type.getClass() == OrSentence.class) {
+            return new OrSentence(alpha, beta);
+        } else if (type.getClass() == AndSentence.class) {
+            return new AndSentence(alpha, beta);
+        } else if (type.getClass() == ImplicationSentence.class) {
+            return new ImplicationSentence(alpha, beta);
+        }
+
+        return new BiimplicationSentence(alpha, beta);
+    }
+
+    private BinarySentence getSentence(Sentence alpha, BinarySentence beta, BinarySentence type) {
+        System.out.println("Incoming type with Binary " + type.getClass());
+        if (type.getClass() == OrSentence.class) {
+            return new OrSentence(alpha, beta);
+        } else if (type.getClass() == AndSentence.class) {
+            return new AndSentence(alpha, beta);
+        } else if (type.getClass() == ImplicationSentence.class) {
+            return new ImplicationSentence(alpha, beta);
+        }
+
+        System.out.println("Bi impli set");
+        return new BiimplicationSentence(alpha, beta);
     }
     
     private int findParenthesesEnding(List<String> sentence, int i, int j, List<Sentence> builder, List<List<Sentence>> output) {

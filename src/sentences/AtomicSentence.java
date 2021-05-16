@@ -2,6 +2,8 @@ package sentences;
 
 public class AtomicSentence extends Sentence {
 	private String name;
+
+	public AtomicSentence() {}
 	
 	public AtomicSentence(String name) {
 		this.name = name;
