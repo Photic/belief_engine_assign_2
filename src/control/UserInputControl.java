@@ -18,8 +18,7 @@ public class UserInputControl {
         constants.add(Constants.OR);
     }
 
-    public void splitIntoBeliefBaseSentences() {
-        String input = "( alpha ,  alpha | !beta , ( !alpha & (beta | (!!gamma)) , alpha <=> (beta | gamma), !beta )";
+    public void splitIntoBeliefBaseSentences(String input) {
         System.out.println(input);
         input = removeLeadingAndTrailingEncapsulations(input);
         String[] split = input.split(",");

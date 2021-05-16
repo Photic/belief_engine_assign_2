@@ -8,16 +8,18 @@ public class RunMe {
     public static void main(String args[]) throws Exception {
     	//SentenceToCNFTest();
     	// beliefBaseSentenceTest();
-        // Scanner scan = new Scanner(System.in);
-		// String line = "";
+        Scanner scan = new Scanner(System.in);
+		String line = "";
 		UserInputControl user = new UserInputControl();
 
-		user.splitIntoBeliefBaseSentences();
-
-		// while (!line.equals("q")) {
-		// 	line = input(scan);
+		while (!line.equals("q")) {
+			line = input(scan);
 			
-		// }
+			if (line.length() > 10) {
+				user.splitIntoBeliefBaseSentences(line); // "( alpha ,  alpha | !beta , ( !alpha & (beta | (!!gamma)) , alpha <=> (beta | gamma), !beta )"
+			}
+			
+		}
 		
         System.out.println("Agent have Exited");
     }
