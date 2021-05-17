@@ -133,7 +133,7 @@ public class UserInputControl {
                     //System.out.println("Beta set to " + output.get(i).get(j));
                     beta = output.get(i).get(j);
                 } else if (alpha == null && !(output.get(i).get(j) instanceof BinarySentence)) {
-                    System.out.println("Alpha set to " + output.get(i).get(j));
+                    //System.out.println("Alpha set to " + output.get(i).get(j));
                     alpha = output.get(i).get(j);
                 }
 

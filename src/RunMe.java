@@ -60,7 +60,8 @@ public class RunMe {
 
 				switch (line.toLowerCase()) {
 					case "1":
-						line = input(scan, "Sentence = ");
+						showConstants();
+						line = input(scan, "E: Sentence = ");
 						BeliefBase bb = user.splitIntoBeliefBaseSentences(line);
 						for (Sentence sent : bb.getSentences()) {
 							beliefBase.expand(sent);
@@ -68,7 +69,8 @@ public class RunMe {
 						System.out.println("\t | The Belief Base is now = " + beliefBase);
 						break;
 					case "2":
-						line = input(scan, "Sentence = ");
+						showConstants();
+						line = input(scan, "C: Sentence = ");
 						BeliefBase bb2 = user.splitIntoBeliefBaseSentences(line);
 						for (Sentence sent : bb2.getSentences()) {
 							beliefBase.contract(sent);
@@ -76,15 +78,17 @@ public class RunMe {
 						System.out.println("\t | The Belief Base is now = " + beliefBase);
 						break;
 					case "3":
-						line = input(scan, "Sentence = ");
+						showConstants();
+						line = input(scan, "R: Sentence = ");
 						BeliefBase bb4 = user.splitIntoBeliefBaseSentences(line);
 						for (Sentence sent : bb4.getSentences()) {
+							System.out.println(sent);
 							beliefBase.revise(sent);
 						}
 						System.out.println("\t | The Belief Base is now = " + beliefBase);
 						break;
 					case "4":
-						line = input(scan, "Sentence = ");
+						line = input(scan, "Is: Sentence = ");
 						BeliefBase bb3 = user.splitIntoBeliefBaseSentences(line);
 						boolean containsSentence = false;
 						for (Sentence sent : bb3.getSentences()) {
@@ -121,6 +125,7 @@ public class RunMe {
 			}
 
 			if (userInput) {
+				showConstants();
 				line = input(scan, "Belief Base = ");
 				if (line.toLowerCase().equals("q")) {
 					continue;
@@ -185,25 +190,29 @@ public class RunMe {
 		return scan.nextLine();
 	}
 	
-    public static void SentenceToCNFTest() throws Exception {
-    	String alpha = "alpha";
-    	String beta = "beta";
-    	String gamma = "gamma";
-    	
-    	Sentence distriTest = new BiimplicationSentence(
-    			new AtomicSentence(alpha),
-    			new OrSentence(
-    					new AtomicSentence(beta),
-    					new AtomicSentence(gamma)
-    					)
-		);
-				
-    	System.out.println(String.format("\t | Sentence before CNF conversion: %s", distriTest.toString()));
-    	distriTest = distriTest.convertToCNF();
-    	System.out.println(String.format("\t | Sentence after CNF conversion: %s", distriTest.toString()));
-    	System.out.println(String.format("\t | Sentence isInCNF()-evaluation: %s", distriTest.isInCNF()));
-    	System.out.println(String.format("\t | distriTest predicate list: %s", distriTest.getPredicates()));
-    }
+	public static void SentenceToCNFTest() throws Exception {
+		String alpha = "alpha";
+		String beta = "beta";
+		String gamma = "gamma";
+
+		Sentence distriTest = new BiimplicationSentence(new AtomicSentence(alpha),
+				new OrSentence(new AtomicSentence(beta), new AtomicSentence(gamma)));
+
+		System.out.println(String.format("\t | Sentence before CNF conversion: %s", distriTest.toString()));
+		distriTest = distriTest.convertToCNF();
+		System.out.println(String.format("\t | Sentence after CNF conversion: %s", distriTest.toString()));
+		System.out.println(String.format("\t | Sentence isInCNF()-evaluation: %s", distriTest.isInCNF()));
+		System.out.println(String.format("\t | distriTest predicate list: %s", distriTest.getPredicates()));
+	}
+	
+	private static void showConstants() {
+		System.out.println();
+		System.out.println("\t | OR = |");
+		System.out.println("\t | AND = &");
+		System.out.println("\t | NOT = !");
+		System.out.println("\t | Implication = =>");
+		System.out.println("\t | BiImplication = <=>");
+	}
     
 	public static void revisionPostulateTests() {
 		revisionSuccess();
