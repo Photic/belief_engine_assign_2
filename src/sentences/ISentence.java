@@ -3,6 +3,7 @@ package sentences;
 import java.util.List;
 
 public interface ISentence {
+	public boolean getName();
 	public boolean getValue();
 	public boolean isInCNF();
 	public Sentence convertToCNF() throws Exception;
