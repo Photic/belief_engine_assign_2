@@ -191,7 +191,6 @@ public class BeliefBase {
 
 		}
 
-		List<Sentence> NfromC2= s2.getPredicates();
 		for(Sentence s : s2.getPredicates()){
 			if(!s.getValue()){
 				NfromS2.add(s);
@@ -203,7 +202,7 @@ public class BeliefBase {
 			for(Sentence neg : NfromS2){
 				for(Sentence p : pos.getPredicates()){
 					for(Sentence p2 : neg.getPredicates()){
-						if(p.getName()==p2.getName()){
+						if(((AtomicSentence) p).getName()==((AtomicSentence) p2).getName()){
 							comp.add(p);
 						}
 					}
@@ -213,16 +212,66 @@ public class BeliefBase {
 
 		for(Sentence c_s : comp){
 			List<Sentence> resolventPredicates = new ArrayList<Sentence>();
-
+			boolean c_sIsAtomic = false;
+			boolean c_sIsNotOfAtomic = false;
+			Sentence c_sNotChild = null;
+			if (c_s instanceof AtomicSentence) {
+				c_sIsAtomic = true;
+			} else {
+				c_sIsNotOfAtomic = true;
+				c_sNotChild = ((NotSentence) c_s).getSentence();
+			}
 			for(Sentence pred1 : s1.getPredicates()){
-					if(!pred1.getValue() || !pred1.getName() ==c_s.getName()){
+				if (pred1 instanceof AtomicSentence && c_sIsAtomic) {
+					AtomicSentence pred1Atomic = (AtomicSentence) pred1;
+					if(!pred1Atomic.getValue() || !pred1Atomic.getName().equals(((AtomicSentence)c_s).getName())){
 						resolventPredicates.add(pred1);
-					}				
+					}									
+				}
+				if (pred1 instanceof NotSentence && c_sIsAtomic) {
+					AtomicSentence pred1Atomic = (AtomicSentence) ((NotSentence) pred1).getSentence();
+					if(!pred1.getValue() || !pred1Atomic.getName().equals(((AtomicSentence)c_s).getName())){
+						resolventPredicates.add(pred1);
+					}									
+				}
+				if (pred1 instanceof AtomicSentence && c_sIsNotOfAtomic) {
+					AtomicSentence pred1Atomic = (AtomicSentence) pred1;
+					if(!pred1Atomic.getValue() || !pred1Atomic.getName().equals(((AtomicSentence)c_sNotChild).getName())){
+						resolventPredicates.add(pred1);
+					}									
+				}
+				if (pred1 instanceof NotSentence && c_sIsNotOfAtomic) {
+					AtomicSentence pred1Atomic = (AtomicSentence) ((NotSentence) pred1).getSentence();
+					if(!pred1.getValue() || !pred1Atomic.getName().equals(((AtomicSentence)c_sNotChild).getName())){
+						resolventPredicates.add(pred1);
+					}									
+				}
 			}
 
 			for(Sentence pred2 : s2.getPredicates()){
-				if(pred2.getValue() || !pred2.getName() == c_s.getName()){
-					resolventPredicates.add(pred2);
+				if (pred2 instanceof AtomicSentence && c_sIsAtomic) {
+					AtomicSentence pred2Atomic = (AtomicSentence) pred2;
+					if(!pred2Atomic.getValue() || !pred2Atomic.getName().equals(((AtomicSentence)c_s).getName())){
+						resolventPredicates.add(pred2);
+					}									
+				}
+				if (pred2 instanceof NotSentence && c_sIsAtomic) {
+					AtomicSentence pred2Atomic = (AtomicSentence) ((NotSentence) pred2).getSentence();
+					if(!pred2.getValue() || !pred2Atomic.getName().equals(((AtomicSentence)c_s).getName())){
+						resolventPredicates.add(pred2);
+					}									
+				}
+				if (pred2 instanceof AtomicSentence && c_sIsNotOfAtomic) {
+					AtomicSentence pred2Atomic = (AtomicSentence) pred2;
+					if(!pred2Atomic.getValue() || !pred2Atomic.getName().equals(((AtomicSentence)c_sNotChild).getName())){
+						resolventPredicates.add(pred2);
+					}									
+				}
+				if (pred2 instanceof NotSentence && c_sIsNotOfAtomic) {
+					AtomicSentence pred2Atomic = (AtomicSentence) ((NotSentence) pred2).getSentence();
+					if(!pred2.getValue() || !pred2Atomic.getName().equals(((AtomicSentence)c_sNotChild).getName())){
+						resolventPredicates.add(pred2);
+					}									
 				}
 			}
 			toResolve.addAll(resolventPredicates);
