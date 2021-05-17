@@ -75,11 +75,11 @@ public class BeliefBase {
 		}
 	}
 	public void revise(Sentence newSentence) {
-		if (!sentences.contains(newSentence)) {
-			expand(newSentence);
-		}
 		if (!sentences.contains(new NotSentence(newSentence))) {
 			contract(new NotSentence(newSentence));
+		}
+		if (!sentences.contains(newSentence)) {
+			expand(newSentence);
 		}
 	}
 

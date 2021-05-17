@@ -6,6 +6,7 @@ import sentences.*;
 
 public class RunMe {
 	public static void main(String args[]) throws Exception {
+		
         Scanner scan = new Scanner(System.in);
 		String line = "";
 		UserInputControl user = new UserInputControl();
@@ -219,7 +220,7 @@ public class RunMe {
     	contractionExtensionality();
     }
 
-	private static void contractionSuccess() {
+	public static void contractionSuccess() {
 		System.out.println("\t | Testing the Success postulate for contraction");
 		BeliefBase bBase = new BeliefBase();
     	bBase.expand(new AtomicSentence("p"));
@@ -231,7 +232,7 @@ public class RunMe {
 		System.out.println();
 	}
 
-	private static void contractionInclusion() {
+	public static void contractionInclusion() {
 		System.out.println("\t | Testing the Inclusion postulate for contraction");
 		BeliefBase bBase = new BeliefBase();
     	bBase.expand(new AtomicSentence("p"));
@@ -244,7 +245,7 @@ public class RunMe {
 		System.out.println();
 	}
 
-	private static void contractionVacuity() {
+	public static void contractionVacuity() {
 		System.out.println("\t | Testing the Vacuity postulate for contraction");
 		BeliefBase bBase = new BeliefBase();
     	bBase.expand(new AtomicSentence("p"));
@@ -257,7 +258,7 @@ public class RunMe {
 		System.out.println();
 	}
 
-	private static void contractionExtensionality() {
+	public static void contractionExtensionality() {
 		System.out.println("\t | Testing the Extensionality postulate for contraction");
 		BeliefBase bBase1 = new BeliefBase();
 		bBase1.expand(new ImplicationSentence(new AtomicSentence("p"), new AtomicSentence("q")));
@@ -279,7 +280,7 @@ public class RunMe {
 		System.out.println();
 	}
 
-	private static void revisionSuccess() {
+	public static void revisionSuccess() {
 		System.out.println("\t | Testing the Success postulate for revision");
 		BeliefBase bBase = new BeliefBase();
 		System.out.println(String.format("\t | Elements in the belief base: %s", bBase));
@@ -289,7 +290,7 @@ public class RunMe {
 		System.out.println();
 	}
 
-	private static void revisionInclusion() {
+	public static void revisionInclusion() {
 		System.out.println("\t | Testing the Inclusion postulate for revision");
 		BeliefBase bBase1 = new BeliefBase();
     	bBase1.expand(new AtomicSentence("p"));
@@ -309,7 +310,7 @@ public class RunMe {
 		System.out.println();
 	}
 
-	private static void revisionVacuity() {
+	public static void revisionVacuity() {
 		System.out.println("\t | Testing the Vacuity postulate for revision");
 		BeliefBase bBase = new BeliefBase();
     	bBase.expand(new AtomicSentence("p"));
@@ -322,7 +323,7 @@ public class RunMe {
 		System.out.println();
 	}
 
-	private static void revisionExtensionality() {
+	public static void revisionExtensionality() {
 		System.out.println("\t | Testing the Extensionality postulate for revision");
 		BeliefBase bBase1 = new BeliefBase();
     	bBase1.expand(new AtomicSentence("p"));
