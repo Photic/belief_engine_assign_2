@@ -120,36 +120,25 @@ public class UserInputControl {
 
         for (int i = output.size() - 1; i >= 0; i--) {
             for (int j = output.get(i).size() - 1; j >= 0; j--) {
-                //System.out.println(output.get(i).get(j).getClass());
                 if (middle != null && output.get(i).get(j) instanceof BinarySentence) {
-                    //System.out.println("Top set to " + output.get(i).get(j).getClass());
                     top = (BinarySentence) output.get(i).get(j);
                     alpha = null;
                     beta = new AtomicSentence();
                 } else if (bottom == null && output.get(i).get(j) instanceof BinarySentence) {
-                    //System.out.println("Bottom set to " + output.get(i).get(j).getClass());
                     bottom = (BinarySentence) output.get(i).get(j);
                 } else if (beta == null && middle == null && !(output.get(i).get(j) instanceof BinarySentence)) {
-                    //System.out.println("Beta set to " + output.get(i).get(j));
                     beta = output.get(i).get(j);
                 } else if (alpha == null && !(output.get(i).get(j) instanceof BinarySentence)) {
-                    //System.out.println("Alpha set to " + output.get(i).get(j));
                     alpha = output.get(i).get(j);
                 }
 
                 if (bottom != null && beta != null && alpha != null && top == null) {
-                    // System.out.println("Alpha to middle " + alpha);
-                    // System.out.println("Beta to middle " + beta);
-                    // System.out.println("middle class " + bottom.getClass());
                     middle = getSentence(alpha, beta, bottom);
                     bottom = null;
                     alpha = null;
                     beta = null;
-                    // System.out.println("Middle is now " + middle);
                     continue;
                 } else if (alpha != null && middle != null) {
-                    // System.out.println("Alpha set on top");
-                    // System.out.println("Coming with to Top alpha " + alpha + " and a middle " + middle);
                     top = getSentence(alpha, middle, top);
                     middle = null;
                     alpha = null;

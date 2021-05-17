@@ -1,9 +1,18 @@
 
+- [Run Project](#run-project)
 - [Menu System](#menu-system)
   - [User Input Option](#user-input-option)
   - [Examples Option](#examples-option)
   - [Quit Program](#quit-program)
 - [Known Working Sentences for Belief base](#known-working-sentences-for-belief-base)
+
+# Run Project
+To run the project you have 2 options, either go into the src folder and find the file RunMe.java, and use your chosen editor to run the main function contained in this file. 
+
+Or use the command.
+```
+java -jar belief_engine_assign_2.jar
+```
 
 # Menu System
 When you first start up the program, you will be met with the menu system. This system needs user input to navigate the programs functionality.
